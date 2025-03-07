@@ -1,9 +1,46 @@
-# Node modules
+# Node.js
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/logs
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# .env-Dateien (für Umgebungsvariablen)
+# dotenv environment files (Sensible Daten)
 .env
 
+# AWS credentials or any cloud service keys (falls lokal gespeichert)
+.aws/
+*.pem
+
+# Build artefacts
+/build
+/dist
+
+# Coverage directory used by testing tools
+coverage/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REACT specific
+*.cache
+.cache/
+public/
+build/
+
+# MacOS specific
+.DS_Store
+
+# VSCode specific
+.vscode/
