@@ -1,13 +1,15 @@
 import './App.css'
-import VideoUpload from './uploader'
+import VideoUpload from './components/uploader'
 
 function App() {
   
   return (
     <>
-      <div>
-        <h1>Welcome to Clipzy! ▶️</h1>
-        <VideoUpload/>
+      <div className='App'>
+        <h1>Welcome to Clipzy! </h1>
+        <h2>Upload your favorite Video</h2>
+        <VideoUpload />
+        
       </div>
       
     </>

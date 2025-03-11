@@ -21,6 +21,8 @@ services:
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       S3_BUCKET: ${S3_BUCKET}
       MONGO_URI: ${MONGO_URI}
+    volumes:
+      - ./server/thumbnails:/app/thumbnails
   frontend:
     build:
       context: ./client  # Verzeichnis zum Builden des Frontend

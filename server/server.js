@@ -9,7 +9,6 @@ const Video = require('./models/video');
 const ffmpeg = require('fluent-ffmpeg');
 const path = require('path');
 const fs = require('fs');
-const { Upload } = require('@aws-sdk/lib-storage')
 
 const app = express();
 
@@ -24,14 +23,6 @@ mongoose.connect(process.env.MONGO_URI)
         console.error("Fehler bei der Verbindung zur Datenbank:", err);
     });
 
-
-
-    const thumbnailDir = path.join(__dirname, 'thumbnails');
-    if (!fs.existsSync(thumbnailDir)) {
-        fs.mkdirSync(thumbnailDir);
-    }
-
-    
 const s3 = new S3Client({
     region: process.env.AWS_REGION,
     credentials: {
@@ -62,104 +53,77 @@ const upload = multer({
     }
 });
 
-// Standard Route
-app.get('/', (req, res) => {
-    res.send('Willkommen im Backend von Clipzy! Der Server läuft...');
-});
-
-
-// Video Upload Route
-app.post('/upload', (req, res) => {
-    upload.single('video')(req, res, async (err) => {
-        if (err) {
-            if (err instanceof multer.MulterError) {
-                if (err.code === 'LIMIT_FILE_SIZE') {
-                    return res.status(413).json({ error: 'Die Datei ist zu groß! Maximal erlaubt: 50 MB.' });
-                }
-            }
-
-            if (err.message === 'Nur Video-Dateien sind erlaubt') {
-                return res.status(400).json({ error: 'Ungültiges Dateiformat. Nur Videos sind erlaubt!' });
-            }
-
-            return res.status(500).json({ error: 'Es gab ein Problem beim Hochladen des Videos!' });
-        }
-
-        if (!req.file) {
-            return res.status(400).json({ error: 'Kein Video wurde hochgeladen!' });
-        }
-
-        const thumbnailPath = path.join(__dirname, 'thumbnails', `${Date.now()}_thumbnail.png`);
-
-        ffmpeg(req.file.location)
-            .screenshots({
-                count: 1,
-                folder: 'thumbnails',
-                filename: `${Date.now()}_thumbnail.png`,
-                size: '320x240',
-                timemarks: ['3']
-            })
-            .on('end', async () => {
-                const newVideo = new Video({
-                    key: req.file.key,
-                    title: req.body.title || 'Untitled',
-                    description: req.body.description || '',
-                    tags: req.body.tags || [],
-                    thumbnailUrl: `/thumbnails/${path.basename(thumbnailPath)}`,
-                    videoUrl: req.file.location
-                });
-
-                try {
-                    await newVideo.save();
-                    res.status(200).json({
-                        message: 'Video erfolgreich hochgeladen und Metadaten gespeichert',
-                        videoUrl: req.file.location,
-                        thumbnailUrl: `/thumbnails/${path.basename(thumbnailPath)}`
-                    });
-                } catch (error) {
-                    console.error('Fehler beim Speichern der Metadaten:', error);
-                    res.status(500).json({ error: 'Fehler beim Speichern der Videodaten!' });
-                }
-            })
-            .on('error', (err) => {
-                console.error('Fehler beim Erstellen des Thumbnails:', err);
-                res.status(500).json({ error: 'Fehler beim Erstellen des Thumbnails!' });
-            });
-    });
-});
-
-// Upload Thumbnail Route
-app.post('/uploadThumbnail', upload.single('thumbnail'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'Kein Bild hochgeladen' });
-    }
-
-    // Erstelle den Dateinamen für das Thumbnail (basierend auf dem aktuellen Zeitstempel)
-    const fileName = `${Date.now()}_${req.file.originalname}`;
-    const s3UploadParams = {
-        Bucket: 'clipzy-bucket',                // Dein S3-Bucket
-        Key: `thumbnails/${fileName}`,          // Der Pfad im S3-Bucket
-        Body: req.file.buffer,                  // Direkt das Buffer der Datei hochladen (keine fs.createReadStream nötig)
-        ACL: 'public-read',                     // Öffentlich lesbar
+// Helper Funktion zum Löschen von Dateien auf S3
+const deleteFileFromS3 = async (fileKey) => {
+    const deleteParams = {
+        Bucket: 'clipzy-bucket', 
+        Key: fileKey,
     };
 
     try {
-        // Datei nach S3 hochladen
-        await s3.send(new PutObjectCommand(s3UploadParams));
-
-        // Erstelle die URL für das hochgeladene Bild
-        const thumbnailUrl = `https://${s3UploadParams.Bucket}.s3.amazonaws.com/${s3UploadParams.Key}`;
-
-        res.status(200).json({
-            message: 'Thumbnail erfolgreich hochgeladen',
-            thumbnailUrl: thumbnailUrl // Rückgabe der URL des Thumbnails
-        });
+        await s3.send(new DeleteObjectCommand(deleteParams));
+        console.log(`Datei ${fileKey} erfolgreich gelöscht.`);
     } catch (error) {
-        console.error('Fehler beim Hochladen des Thumbnails:', error);
-        res.status(500).json({ error: 'Fehler beim Hochladen des Thumbnails!' });
+        console.error(`Fehler beim Löschen der Datei ${fileKey}:`, error);
+        throw error;
     }
-});
+};
 
+app.get('/', (req, res) => {
+    res.send('Willkommen im Backend von Clipzy!')
+})
+
+// Route für das Video-Upload
+app.post('/upload', upload.single('video'), (req, res) => {
+    const videoFile = req.file;
+    if (!videoFile) {
+        return res.status(400).json({ error: 'Kein Video-Datei hochgeladen' });
+    }
+
+    const videoPath = videoFile.location; // Der Video-Pfad auf S3
+    const thumbnailPath = path.join(__dirname, 'thumbnails', `${Date.now()}_thumbnail.png`);
+
+    // Thumbnail aus Video extrahieren
+    ffmpeg(videoPath)
+        .screenshots({
+            count: 1,
+            folder: path.dirname(thumbnailPath),
+            filename: path.basename(thumbnailPath),
+            size: '320x240',
+        })
+        .on('end', () => {
+            // Thumbnail hochladen
+            const thumbnailUploadParams = {
+                Bucket: 'clipzy-bucket',
+                Key: `thumbnails/${path.basename(thumbnailPath)}`,
+                Body: fs.createReadStream(thumbnailPath),
+                ACL: 'public-read',
+                ContentType: 'image/png',
+            };
+
+            s3.send(new PutObjectCommand(thumbnailUploadParams)) 
+                .then(() => {
+                    
+                    // Erstelle die URLs
+                    const videoUrl = videoFile.location;
+                    const thumbnailUrl = `https://clipzy-bucket.s3.${process.env.AWS_REGION}.amazonaws.com/thumbnails/${path.basename(thumbnailPath)}`;
+
+                    // Antwort mit den URLs
+                    res.json({
+                        videoUrl,
+                        thumbnailUrl,
+                    });
+                })
+                .catch((err) => {
+                    console.error('Fehler beim Hochladen des Thumbnails:', err);
+                    res.status(500).json({ error: 'Fehler beim Hochladen des Thumbnails' });
+                });
+        })
+        .on('error', (err) => {
+            console.error('Fehler beim Erstellen des Thumbnails:', err);
+            res.status(500).json({ error: 'Fehler beim Erstellen des Thumbnails' });
+        });
+});
 
 // Delete Route
 app.delete('/delete', async (req, res) => {
@@ -170,63 +134,22 @@ app.delete('/delete', async (req, res) => {
     }
 
     try {
-        const deleteParams = {
-            Bucket: 'clipzy-bucket',
-            Key: key,
-        };
+        // Lösche das Video
+        await deleteFileFromS3(key);
 
-        await s3.send(new DeleteObjectCommand(deleteParams));
-        res.status(200).json({ message: 'Datei erfolgreich gelöscht' });
+        const videoBaseName = path.basename(key, path.extname(key)); // Entferne die Dateiendung vom Video
+        const timestamp = videoBaseName.split('_')[0]; // Extrahiere den Zeitstempel (z.B. '1741687378863' von '1741687378863_video.mp4')
+
+        // Bilden des Thumbnail-Keys basierend auf dem Zeitstempel
+        const thumbnailKey = `thumbnails/${timestamp}_thumbnail.png`;  
+
+        // Lösche das Thumbnail
+        await deleteFileFromS3(thumbnailKey);
+
+        res.status(200).json({ message: 'Datei und Thumbnail erfolgreich gelöscht' });
     } catch (error) {
-        console.error('Fehler beim Löschen der Datei:', error);
+        console.error('Fehler beim Löschen der Datei oder des Thumbnails:', error);
         res.status(500).json({ error: 'Es gab ein Problem beim Löschen der Datei!' });
-    }
-});
-
-// Update Metadata Route
-app.patch('/updateMetadata', async (req, res) => {
-    const { key, title, description, tags } = req.body;
-
-    if (!key) {
-        return res.status(400).json({ error: 'Kein Video-Key angegeben' });
-    }
-
-    try {
-        const video = await Video.findOneAndUpdate(
-            { key: key },
-            { title, description, tags },
-            { new: true }
-        );
-
-        if (!video) {
-            return res.status(404).json({ error: 'Video nicht gefunden!' });
-        }
-
-        res.status(200).json({
-            message: 'Metadaten erfolgreich aktualisiert',
-            video
-        });
-    } catch (error) {
-        console.error('Fehler beim Aktualisieren der Metadaten:', error);
-        res.status(500).json({ error: 'Es gab ein Problem beim Aktualisieren der Metadaten!' });
-    }
-});
-
-// Check Metadata
-app.get('/video/:key', async (req, res) => {
-    const { key } = req.params;
-
-    try {
-        const video = await Video.findOne({ key: key });
-
-        if (!video) {
-            return res.status(404).json({ error: 'Video nicht gefunden' });
-        }
-
-        res.status(200).json(video);
-    } catch (error) {
-        console.error('Fehler beim Abrufen der Videodaten:', error);
-        res.status(500).json({ error: 'Es gab ein Problem beim Abrufen der Videodaten!' });
     }
 });
 
@@ -240,6 +163,8 @@ app.get('/videos', async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log('Server läuft auf http://localhost:3000');
+// Server starten
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Server läuft auf http://localhost:${port}`);
 });

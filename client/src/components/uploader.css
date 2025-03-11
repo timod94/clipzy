@@ -1,0 +1,93 @@
+/* Hauptcontainer für das gesamte Layout */
+.upload-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #00072b;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropzone Styling */
+.dropzone {
+    border: 2px dashed #007BFF;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #00072b;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.dropzone:hover {
+    background-color: #0784c2;
+}
+
+.dropzone-text {
+    font-size: 16px;
+    color: #c5c5c5;
+}
+
+.status-text,
+.error-text {
+    font-size: 14px;
+    color: #cbcccf;
+}
+
+.error-text {
+    color: #e74c3c;
+}
+
+.upload-success {
+    font-size: 18px;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+/* Video container styling */
+.video-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.video-preview {
+    margin: 20px 0;
+}
+
+.video-player {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #e74c3c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+/* Thumbnail styling */
+.thumbnail-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.thumbnail-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.thumbnail-image {
+    width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

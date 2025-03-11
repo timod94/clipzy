@@ -50,3 +50,5 @@ data/
 
 # Exclude the thumbnails directory
 server/thumbnails/
+
+*.bk
