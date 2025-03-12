@@ -1,7 +1,7 @@
 // eslint.config.js
-import { defineConfig } from 'eslint-plugin-react';
+const { defineConfig } = require('eslint-plugin-react');
 
-export default defineConfig({
+module.exports = defineConfig({
   // Verwende direkt das Array von ESLint-Konfigurationen
   overrides: [
     {
