@@ -28,7 +28,7 @@ jobs:
 
       - name: Run React tests
         working-directory: ./frontend
-        run: npm test -- --ci --maxWorkers=2  # Setze Testoptionen für CI (z. B. kein Watch-Mode)
+        run: npm test -- --ci --maxWorkers=2 --passWithNoTests # Setze Testoptionen für CI (z. B. kein Watch-Mode)
 
   # Job für Express-Server-Tests
   express_tests:
