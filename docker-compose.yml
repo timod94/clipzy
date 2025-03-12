@@ -2,17 +2,17 @@ version: '3.8'
 services:
   mongo:
     image: mongo:latest
-    container_name: mongo_clipzy
+    container_name: mongoDB_clipzy
     ports:
       - 27017:27017
     volumes:
       - ./data:/data/db
     restart: always
   server:
-    build: ./server
-    container_name: clipzy_server
+    build: ./backend
+    container_name: clipzy_backend
     ports:
-      - 3000:3000
+      - 5000:5000
     depends_on:
       - mongo
     environment:
@@ -21,18 +21,16 @@ services:
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       S3_BUCKET: ${S3_BUCKET}
       MONGO_URI: ${MONGO_URI}
-    volumes:
-      - ./server/thumbnails:/app/thumbnails
   frontend:
     build:
-      context: ./client  # Verzeichnis zum Builden des Frontend
+      context: ./frontend  
     container_name: clipzy_frontend
     ports:
-      - "5173:5173"  # React App läuft standardmäßig auf Port 5173
+      - "5173:5173"
     volumes:
-      - ./client:/app  # Mounten des Frontend-Verzeichnisses
+      - ./frontend:/app  
     environment:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - server
-    command: npm run dev -- --host 0.0.0.0  # Füge den Host hinzu, damit der Container verfügbar wird
+    command: npm run dev -- --host 0.0.0.0  

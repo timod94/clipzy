@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import axios from 'axios'
-import './uploader.css'
+import './VideoUploadForm.css';
+import VideoDeleteForm from './VideoDeleteForm'; // Importiere VideoDeleteForm
 
 const VideoUpload = () => {
     const [uploading, setUploading] = useState(false);
@@ -32,39 +32,26 @@ const VideoUpload = () => {
     
         setUploading(true);
         setUploadError(null);
-        setErrorMessage('');  // Stelle sicher, dass die Fehler-Nachricht zurückgesetzt wird
+        setErrorMessage('');
     
         const formData = new FormData();
         formData.append('video', videoFile);
     
         try {
-            const response = await fetch('http://localhost:3000/upload', {
+            const response = await fetch('http://localhost:5000/upload', {
                 method: 'POST',
                 body: formData
             });
     
-            // Überprüfe die Antwort auf Fehlercodes
             if (!response.ok) {
-                // Wenn der Statuscode nicht ok ist, dann holen wir die Fehlermeldung
                 const errorData = await response.json();
-                
-                // Überprüfe speziell auf den Statuscode und zeige die entsprechende Fehlermeldung an
-                if (response.status === 413) {
-                    throw new Error('Die Datei ist zu groß! Maximale Dateigröße ist 50 MB.');
-                } else if (response.status === 400) {
-                    throw new Error(errorData.error || 'Ungültige Anfrage!');
-                } else if (response.status === 500) {
-                    throw new Error(errorData.error || 'Fehler auf dem Server!');
-                } else {
-                    throw new Error(errorData.error || 'Unbekannter Fehler!');
-                }
+                throw new Error(errorData.error || 'Fehler beim Hochladen des Videos');
             }
     
-            // Wenn der Upload erfolgreich war, erhalten wir die Video- und Thumbnail-URLs
             const data = await response.json();
             setVideoUrl(data.videoUrl);
             setThumbnailUrl(data.thumbnailUrl);
-            alert('Video und Thumbnail erfolgreich hochgeladen!');
+            alert('Video erfolgreich hochgeladen!');
         } catch (error) {
             console.error('Fehler beim Hochladen:', error);
             setUploadError(error.message);
@@ -72,47 +59,11 @@ const VideoUpload = () => {
             setUploading(false);
         }
     };
-    
 
-    const deleteVideo = async (videoUrl) => {
-        const videoKey = videoUrl.split('amazonaws.com/')[1]; // Extrahiert den S3-Key aus der URL
-        console.log("Versuche, das Video zu löschen. VideoKey:", videoKey);
-    
-        try {
-            const response = await fetch('http://localhost:3000/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ key: videoKey }), // Sende nur den Key
-            });
-    
-            const data = await response.json();
-    
-            if (response.ok) {
-                console.log('Löschvorgang erfolgreich:', data);
-                alert('Video erfolgreich gelöscht!');
-                setVideoUrl(null);
-                setThumbnailUrl(null);
-            } else {
-                console.error('Fehler beim Löschen:', data.error || 'Löschvorgang fehlgeschlagen!');
-                setUploadError(data.error);
-            }
-        } catch (error) {
-            console.error('Fehler beim Löschen:', error);
-            setUploadError(error.message);
-        }
-    };
-    
-    
-    
     return (
         <div className="upload-container">
-            {/* Dropzone nur für Datei-Uploads */}
-            <div
-                {...getRootProps()}
-                className="dropzone"
-            >
+            {/* Dropzone für Datei-Uploads */}
+            <div {...getRootProps()} className="dropzone">
                 <input {...getInputProps()} accept="video/*" />
                 <p className="dropzone-text">Drag & Drop ein Video hier, oder klicke um auszuwählen</p>
 
@@ -134,7 +85,13 @@ const VideoUpload = () => {
                         </video>
                     </div>
 
-                    <button className="delete-button" onClick={() => deleteVideo(videoUrl)}>Video löschen</button>
+                    {/* Video löschen */}
+                    <VideoDeleteForm 
+                        videoUrl={videoUrl}
+                        setVideoUrl={setVideoUrl}
+                        setThumbnailUrl={setThumbnailUrl}
+                        setUploadError={setUploadError}
+                    />
                 </div>
             )}
 
@@ -146,6 +103,6 @@ const VideoUpload = () => {
             )}
         </div>
     );
-}    
+};
 
 export default VideoUpload;
