@@ -1,1 +1,1 @@
-CLIPZY 
+CLIPZY - Video Sharing Webapp

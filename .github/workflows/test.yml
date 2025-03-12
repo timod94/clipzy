@@ -1,0 +1,53 @@
+name: Run React & Express Tests
+
+on:
+  push:
+    branches:
+      - main  # Trigger auf Push in den main Branch
+  pull_request:
+    branches:
+      - main  # Trigger für Pull-Requests in den main Branch
+
+jobs:
+  # Job für React-Tests
+  react_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js for React App
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Wähle eine Node-Version aus
+
+      - name: Install React dependencies
+        working-directory: ./frontend  # Stellt sicher, dass wir im frontend Verzeichnis sind
+        run: npm install
+
+      - name: Run React tests
+        working-directory: ./frontend
+        run: npm test -- --ci --maxWorkers=2  # Setze Testoptionen für CI (z. B. kein Watch-Mode)
+
+  # Job für Express-Server-Tests
+  express_tests:
+    runs-on: ubuntu-latest
+    needs: react_tests  # Dieser Job wird erst nach den React-Tests ausgeführt
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js for Express App
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Die gleiche Node-Version wie für React
+
+      - name: Install Express dependencies
+        working-directory: ./backend  # Stellt sicher, dass wir im backend Verzeichnis sind
+        run: npm install
+
+      - name: Run Express tests
+        working-directory: ./backend
+        run: npm test  # Hier werden die Tests für den Express-Server ausgeführt
