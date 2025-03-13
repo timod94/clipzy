@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import VideoDeleteForm from './VideoDeleteForm';
 import './VideoUploadForm.css';
-import VideoDeleteForm from './VideoDeleteForm'; // Importiere VideoDeleteForm
 
 const VideoUpload = () => {
     const [uploading, setUploading] = useState(false);
@@ -9,12 +9,14 @@ const VideoUpload = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [videoUrl, setVideoUrl] = useState(null);
     const [thumbnailUrl, setThumbnailUrl] = useState(null);
+    const [videoKey, setVideoKey] = useState(null)
+    const [thumbnailKey, setThumbnailKey] = useState(null)
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: 'video/*',
         onDrop: (acceptedFiles, rejectedFiles) => {
             if (rejectedFiles.length > 0) {
-                setErrorMessage("Nur Video-Dateien sind erlaubt!");
+                setErrorMessage("Only video files are allowed!");
             } else {
                 setErrorMessage('');
                 handleVideoUpload(acceptedFiles);
@@ -26,7 +28,7 @@ const VideoUpload = () => {
         const videoFile = files[0];
     
         if (!videoFile) {
-            setErrorMessage("Kein Video ausgewählt!");
+            setErrorMessage("Please select a video file to upload.");
             return;
         }
     
@@ -37,37 +39,43 @@ const VideoUpload = () => {
         const formData = new FormData();
         formData.append('video', videoFile);
     
+        const API_BASE_URL = 'http://localhost:5000/api/videos/';
+    
         try {
-            const response = await fetch('http://localhost:5000/upload', {
+            const response = await fetch(`${API_BASE_URL}upload`, {
                 method: 'POST',
                 body: formData
             });
     
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Fehler beim Hochladen des Videos');
+                throw new Error(errorData.error || 'Upload failed. Please try again.');
             }
     
             const data = await response.json();
             setVideoUrl(data.videoUrl);
             setThumbnailUrl(data.thumbnailUrl);
-            alert('Video erfolgreich hochgeladen!');
+            setVideoKey(data.videoKey)
+            setThumbnailKey(data.thumbnailKey)
+
+         
         } catch (error) {
-            console.error('Fehler beim Hochladen:', error);
+            console.error('Upload failed:', error);
             setUploadError(error.message);
         } finally {
             setUploading(false);
         }
     };
+   
 
     return (
         <div className="upload-container">
             {/* Dropzone für Datei-Uploads */}
             <div {...getRootProps()} className="dropzone">
                 <input {...getInputProps()} accept="video/*" />
-                <p className="dropzone-text">Drag & Drop ein Video hier, oder klicke um auszuwählen</p>
+                <p className="dropzone-text">Drag & Drop a video file, or click to select one.</p>
 
-                {uploading && <p className="status-text">Wird hochgeladen...</p>}
+                {uploading && <p className="status-text">Uploading...</p>}
                 {errorMessage && <p className="error-text">{errorMessage}</p>}
                 {uploadError && <p className="error-text">{uploadError}</p>}
             </div>
@@ -75,30 +83,34 @@ const VideoUpload = () => {
             {/* Ausgabe für Video-URL und Thumbnail */}
             {videoUrl && (
                 <div className="video-container">
-                    <p className="upload-success">Video erfolgreich hochgeladen!</p>
+                    <p className="upload-success">Video successfully uploaded!</p>
 
                     {/* Video-Abspiel-Option */}
                     <div className="video-preview">
                         <video className="video-player" width="600" controls>
                             <source src={videoUrl} type="video/mp4" />
-                            Dein Browser unterstützt das Video-Tag nicht.
+                            Your browser does not support the video tag.
                         </video>
                     </div>
 
                     {/* Video löschen */}
                     <VideoDeleteForm 
-                        videoUrl={videoUrl}
-                        setVideoUrl={setVideoUrl}
-                        setThumbnailUrl={setThumbnailUrl}
-                        setUploadError={setUploadError}
+                         videoUrl={videoUrl}
+                         videoKey={videoKey}
+                         thumbnailKey={thumbnailKey}
+                         setVideoUrl={setVideoUrl}
+                         setThumbnailUrl={setThumbnailUrl}
+                         setVideoKey={setVideoKey}       
+                         setThumbnailKey={setThumbnailKey} 
+                         setUploadError={setUploadError}
                     />
                 </div>
             )}
 
             {thumbnailUrl && (
                 <div className="thumbnail-container">
-                    <p className="thumbnail-text">Thumbnail Vorschau:</p>
-                    <img className="thumbnail-image" src={thumbnailUrl} alt="Thumbnail Vorschau" />
+                    <p className="thumbnail-text">Thumbnail preview:</p>
+                    <img className="thumbnail-image" src={thumbnailUrl} alt="Thumbnail preview" />
                 </div>
             )}
         </div>

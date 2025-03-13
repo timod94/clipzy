@@ -1,0 +1,31 @@
+.navbar-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+  }
+  
+  
+.navbar-item {
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+    
+  
+.left {
+    margin-left: 20px; 
+  }
+  
+.center {
+    flex-grow: 1; 
+    text-align: center;
+  }
+  
+.right {
+    margin-right: 20px; 
+  }
+  

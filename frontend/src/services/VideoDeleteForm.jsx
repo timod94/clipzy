@@ -1,43 +1,55 @@
 import React from 'react';
+import '../App.css'
 
-const VideoDeleteForm = ({ videoUrl, setVideoUrl, setThumbnailUrl, setUploadError }) => {
-    // deleteVideo-Funktion, um das Video zu löschen
-    const handleDelete = async () => {
-        const videoKey = videoUrl.split('amazonaws.com/')[1]; // Extrahiert den S3-Key aus der URL
-        console.log("Versuche, das Video zu löschen. VideoKey:", videoKey);
+const VideoDeleteForm = ({ 
+  videoUrl, 
+  videoKey, 
+  thumbnailKey, 
+  setVideoKey, 
+  setThumbnailKey, 
+  setVideoUrl, 
+  setThumbnailUrl, 
+  setUploadError 
+}) => {
+  
+  const handleDelete = async () => {
+    const API_BASE_URL = 'http://localhost:5000/api/videos/';
 
-        try {
-            // API-Aufruf, um das Video zu löschen
-            const response = await fetch('http://localhost:5000/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ key: videoKey }), // Sende nur den Key
-            });
+    try {
+      const response = await fetch(`${API_BASE_URL}delete`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ videoKey, thumbnailKey }),
+      });
 
-            const data = await response.json();
+      const data = await response.json();
 
-            if (response.ok) {
-                console.log('Löschvorgang erfolgreich:', data);
-                alert('Video erfolgreich gelöscht!');
-                setVideoUrl(null);  // Setze die Video-URL auf null
-                setThumbnailUrl(null);  // Setze das Thumbnail auf null
-            } else {
-                console.error('Fehler beim Löschen:', data.error || 'Löschvorgang fehlgeschlagen!');
-                setUploadError(data.error);  // Fehlernachricht setzen
-            }
-        } catch (error) {
-            console.error('Fehler beim Löschen:', error);
-            setUploadError(error.message);  // Fehlernachricht setzen
-        }
-    };
+      if (response.ok) {
+        console.log('Delete operation successful:', data);
 
-    return (
-        <div className="delete-container">
-            <button className="Button"onClick={handleDelete}>Video löschen</button>
-        </div>
-    );
+        alert('Video successfully deleted');
+        
+        setVideoUrl(null);
+        setThumbnailUrl(null);
+        setVideoKey(null);
+        setThumbnailKey(null);
+      } else {
+        console.error('Error deleting:', data.error || 'Delete operation failed!');
+        setUploadError('An error occurred while deleting the video. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error deleting:', error);
+      setUploadError('An error occurred while deleting the video. Please try again.');
+    }
+  };
+
+  return (
+    <div className="delete-container">
+      <button className="Button" onClick={handleDelete}>Delete Video</button>
+    </div>
+  );
 };
 
 export default VideoDeleteForm;

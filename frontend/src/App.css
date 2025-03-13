@@ -4,4 +4,31 @@
   padding: 2rem;
   text-align: center;
 }
+.delete-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.Button {
+  background-color: red;
+  color: white; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  border: none;
+  border-radius: 5px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.Button:hover {
+  background-color: darkred; 
+  transform: scale(1.05); 
+}
+
+.Button:focus {
+  outline: none; 
+}
+
 
