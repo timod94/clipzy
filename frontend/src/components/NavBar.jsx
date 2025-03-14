@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './NavBar.css'; // Verknüpfe dein CSS
+import './NavBar.css'
 
 const NavBar = () => {
   return (
     <nav className="navbar">
-      <div className="navbar-links">
-        <Link to="/" className="navbar-item left">Clipzy</Link>
-        <Link to="/video-gallery" className="navbar-item center">Video Gallery</Link>
-        <Link to="/upload" className="navbar-item right">Upload here</Link>
+      <div className="navbar-left">
+        <Link to="/">Clipzy</Link>
+      </div>
+      <div className="navbar-center">
+        <Link to="/video-gallery">Video Gallery</Link>
+      </div>
+      <div className="navbar-right">
+         <Link to="/upload">Upload here</Link>
       </div>
     </nav>
   );
