@@ -10,7 +10,7 @@
   margin-top: 20px;
 }
 
-.Button {
+.delete-button {
   background-color: red;
   color: white; 
   padding: 10px 20px; 
@@ -22,12 +22,12 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.Button:hover {
+.delete-button:hover {
   background-color: darkred; 
   transform: scale(1.05); 
 }
 
-.Button:focus {
+.delete-button:focus {
   outline: none; 
 }
 
