@@ -10,10 +10,15 @@ const VideoGallery = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
+
         const videoData = await getVideos();
+        console.log("Video fetched for display:", videoData);
         setVideos(videoData);
+
       } catch (error) {
+
         console.error("Error fetching videos:", error);
+
       } finally {
         setLoading(false);
       }
@@ -32,13 +37,12 @@ const VideoGallery = () => {
         <p>No videos available</p>
       ) : (
         <div className="video-grid">
-          {videos.map((video) => (
-            <div key={video._id} className="video-card">
+          {videos.map((video, index) => (
+            <div key={index} className="video-card">
               <video width="300" controls>
                 <source src={video.url} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <h3>{video.title}</h3>
             </div>
           ))}
         </div>

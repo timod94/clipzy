@@ -99,12 +99,4 @@ exports.deleteVideo = async (req, res) => {
 };
 
 
-exports.getVideos = async (req, res) => {
-  try {
-    const videos = await Video.find();
-    res.status(200).json(videos); 
-  } catch (err) {
-    res.status(500).json({ error: 'Error retrieving the videos' });
-  }
-};
 

@@ -5,7 +5,7 @@ import VideoGallery from '../components/VideoGallery';
 const HomePage = () => {
   return (
     <div>
-      <h1>Welcome to Clipzy</h1>
+       
       <p>Your go-to platform for watching and sharing videos!</p>
 
       {/* Video Gallery auf der Startseite */}

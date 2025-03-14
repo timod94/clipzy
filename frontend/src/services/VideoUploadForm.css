@@ -14,36 +14,18 @@
 
 .dropzone-text {
     font-size: 16px;
-    color: #c5c5c5;
+    color: #c4c4c4;
 }
 
 .status-text,
 .error-text {
     font-size: 14px;
-    color: #cbcccf;
+    color: #c4c4c4;
 }
 
 .error-text {
     color: #e74c3c;
 }
-
-.uploading-indicator {
-    margin-top: 10px;
-  }
-  
-  .progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .progress-bar-filled {
-    height: 100%;
-    background-color: #4caf50;
-    transition: width 0.3s ease-in-out;
-  }
 
 
 
