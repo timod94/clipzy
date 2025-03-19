@@ -3,21 +3,29 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/database');
 const videoRoutes = require('./routes/videoRoutes');
+const authRoutes = require('./routes/authRoutes')
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173'}));
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
 app.use('/api/videos', videoRoutes);
+app.use('/api/auth', authRoutes);
 
+// check up route
 app.get('/', (req, res) => {
   res.send('Welcome to Clipzy Backend!');
 });
-
-// express-fehler-middleweare 
 
 app.use((err, req, res, next) => {
   console.error(err);

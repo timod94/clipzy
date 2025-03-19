@@ -20,7 +20,10 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       S3_BUCKET: ${S3_BUCKET}
-      MONGO_URI: ${MONGO_URI}
+      MONGO_URI: mongodb://mongo:27017/clipzy
+      AUTH_SECRET: ${AUTH_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+    
   frontend:
     build:
       context: ./frontend  
@@ -34,3 +37,6 @@ services:
     depends_on:
       - server
     command: npm run dev -- --host 0.0.0.0  
+
+
+
