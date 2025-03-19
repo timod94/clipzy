@@ -3,24 +3,38 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/database');
 const videoRoutes = require('./routes/videoRoutes');
-const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes');
+const passport = require('./config/passportConfig');
+const googleAuthRoutes = require('./routes/googleAuthRoutes');
+const session = require('express-session')
 
 const app = express();
 
 app.use(cors({
   origin: 'http://localhost:5173',
-  methods: ['GET', 'POST'],
-  credentials: true
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET, 
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/api/videos', videoRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/auth', googleAuthRoutes);
 
 // check up route
 app.get('/', (req, res) => {

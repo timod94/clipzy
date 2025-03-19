@@ -5,7 +5,6 @@ const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const s3 = require('../config/aws');
 const Video = require('../models/Video');
 
-// Hilfsfunktion zum Löschen von Dateien auf S3
 const deleteFileFromS3 = async (fileKey) => {
   const deleteParams = {
     Bucket: 'clipzy-bucket',
@@ -62,8 +61,6 @@ exports.uploadVideo = (req, res) => {
           const videoUrl = videoFile.location;
           const thumbnailUrl = `https://clipzy-bucket.s3.${process.env.AWS_REGION}.amazonaws.com/${thumbnailKey}`;
 
-          
-          // Hier die Daten in der DB speichern, falls nötig
 
           res.status(200).json({ videoUrl, thumbnailUrl, videoKey, thumbnailKey });
         })

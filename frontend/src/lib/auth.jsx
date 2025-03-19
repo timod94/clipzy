@@ -2,6 +2,17 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth';
 
+export const handleGoogleAuthRedirect = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+
+  if (token) {
+    localStorage.setItem('token', token);
+    window.history.replaceState({}, document.title, window.location.pathname);
+    window.dispatchEvent(new Event('storage'));
+  }
+};
+
 export const auth = () => {
   const token = localStorage.getItem('token');
   return token ? { token } : null;
@@ -11,6 +22,7 @@ export const signIn = async (credentials) => {
   try {
     const response = await axios.post(`${API_URL}/login`, credentials);
     localStorage.setItem('token', response.data.token);
+    window.dispatchEvent(new Event('storage'));
     return { user: response.data };
   } catch (error) {
     return { error: error.response?.data?.message || 'Login failed' };
@@ -18,8 +30,16 @@ export const signIn = async (credentials) => {
 };
 
 export const signOut = async () => {
+  try {
+    await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
+
   localStorage.removeItem('token');
+  window.dispatchEvent(new Event('storage'));
 };
+
 
 export const register = async (credentials) => {
   try {

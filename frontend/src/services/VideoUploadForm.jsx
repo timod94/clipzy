@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import VideoDeleteForm from './VideoDeleteForm';
-import './VideoUploadForm.css';
+import '../App.css';
 
 const VideoUpload = () => {
     const [uploading, setUploading] = useState(false);
