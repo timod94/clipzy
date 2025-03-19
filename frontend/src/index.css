@@ -1,14 +1,30 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: 'Roboto', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+}
 
-  color-scheme: light dark;
-  color: rgba(231, 231, 231, 0.87);
-  background-color: #030349;
+a {
+  text-decoration: none;
+  color: var(--secondary-color);
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+a:hover {
+  color: #0056b3;
+}
+
+main {
+  padding: 2rem;
+  background-color: var(--background-color); 
+}
+
+
+.full-width-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
 }

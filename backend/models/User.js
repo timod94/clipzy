@@ -18,11 +18,26 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: false
+  },
+  googleId: { 
+    type: String
+  },
+  googleAccessToken: {
+    type: String
+  },
+  googleRefreshToken: {
+    type: String
   }
 }, { timestamps: true });
 
+
 userSchema.pre('save', async function(next) {
+  if (this.googleId) {
+  
+    return next();
+  }
+
   if (!this.isModified('password')) return next();
   
   try {

@@ -5,6 +5,7 @@ const User = require('../models/User');
 const dotenv = require('dotenv');
 
 dotenv.config();
+
 const router = express.Router();
 
 
@@ -52,9 +53,6 @@ router.post('/login', async (req, res) => {
         }
 
 
-        // Logge das Passwort und den Hash
-console.log('Eingegebenes Passwort:', password);
-console.log('Gespeichertes Passwort (gehasht):', user.password);
         
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
@@ -74,5 +72,16 @@ console.log('Gespeichertes Passwort (gehasht):', user.password);
         return res.status(500).json({ message: 'Login failed:', error: error.message });
     }
 });
+
+
+router.post('/logout', (req, res) => {
+    req.logout(err => {
+      if (err) return res.status(500).json({ error: 'Logout failed' });
+      req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.status(200).json({ message: 'Successfully logged out' });
+      });
+    });
+  });
 
 module.exports = router;

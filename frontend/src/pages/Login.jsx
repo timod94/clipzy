@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../lib/auth';
-import './Login.css'
+import GoogleLoginButton from '../components/GoogleLoginButton';
+import '../App.css'
 
 const LoginPage = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -52,6 +54,7 @@ const LoginPage = () => {
           </button>
         </form>
       </div>
+      <GoogleLoginButton />
     </div>
   );
 };

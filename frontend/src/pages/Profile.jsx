@@ -1,12 +1,12 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { handleGoogleAuthRedirect } from '../lib/auth';
 
-function Profile() {
-    return (
-        <div>
-            <h2>Welcome to your profile!</h2>
-            {/* Weitere Profilinformationen */}
-        </div>
-    );
-}
+const Profile = () => {
+  useEffect(() => {
+    handleGoogleAuthRedirect();
+  }, []);
+
+  return <div>USERNAME_PLACEHOLDER</div>;
+};
 
 export default Profile;

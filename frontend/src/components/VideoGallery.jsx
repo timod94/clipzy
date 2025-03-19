@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getVideos, deleteVideo } from '../services/VideoServices'; 
-import './VideoGallery.css';
+import '../App.css';
 
 const S3_BUCKET_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
 
