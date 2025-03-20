@@ -4,14 +4,12 @@ import VideoGallery from '../components/VideoGallery';
 
 const HomePage = () => {
   return (
-    <div>
+    <div className='homepage'>
        
-      <p>Your go-to platform for watching and sharing videos!</p>
+      <h2>Your go-to platform for watching and sharing videos!</h2>
 
-      {/* Video Gallery auf der Startseite */}
       <VideoGallery />
 
-      {/* Verlinkung zur vollständigen Videogalerie-Seite */}
       <Link to="/video-gallery">View All Videos</Link>
     </div>
   );
