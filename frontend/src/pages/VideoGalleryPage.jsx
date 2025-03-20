@@ -3,7 +3,7 @@ import VideoGallery from '../components/VideoGallery';
 
 const VideoGalleryPage = () => {
   return (
-    <div>
+    <div className='video-gallery'>
       <h1>Video Gallery</h1>
       <p>Explore all the available videos.</p>
 

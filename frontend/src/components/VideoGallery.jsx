@@ -8,7 +8,6 @@ const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Abrufen der Videos
   useEffect(() => {
     const fetchVideos = async () => {
       try {
@@ -49,12 +48,12 @@ const VideoGallery = () => {
   }, []);
 
   const handleDelete = async (videoKey, thumbnailKey) => {
-    const result = await deleteVideo(videoKey, thumbnailKey); // Verwende deleteVideo hier
+    const result = await deleteVideo(videoKey, thumbnailKey); 
 
     if (result.success) {
-      setVideos(videos.filter((video) => video.key !== videoKey)); // Entferne das Video nach erfolgreichem Löschen
+      setVideos(videos.filter((video) => video.key !== videoKey));
     } else {
-      alert(result.error); // Zeige einen Fehler an, falls das Löschen fehlschlägt
+      alert(result.error);
     }
   };
 

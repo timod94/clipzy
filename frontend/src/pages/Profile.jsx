@@ -6,7 +6,7 @@ const Profile = () => {
     handleGoogleAuthRedirect();
   }, []);
 
-  return <div>USERNAME_PLACEHOLDER</div>;
+  return <div className='profile'>USERNAME_PLACEHOLDER</div>;
 };
 
 export default Profile;

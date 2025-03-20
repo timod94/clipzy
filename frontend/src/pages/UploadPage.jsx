@@ -3,7 +3,7 @@ import VideoUploadForm from '../services/VideoUploadForm';
 
 const UploadPage = () => {
   return (
-    <div>
+    <div className='upload-container'>
       <h1>Upload your favorite Video</h1>
       <VideoUploadForm />
     </div>
