@@ -1,6 +1,6 @@
 # Clipzy
 
-Clipzy is a platform for sharing and watching videos. Users can upload and view videos, with authentication provided via Google Auth. The videos are stored on AWS S3, and thumbnails are generated using FFmpeg.
+Clipzy is a platform for sharing and watching videos. Users can upload and view videos, with authentication. The videos are stored on AWS S3, and thumbnails are generated using FFmpeg.
 
 ## Technologies
 - **Frontend**: React+Vite, CSS
