@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaSun, FaMoon } from 'react-icons/fa'; // Icons importieren
+import { FaToggleOn, FaToggleOff } from 'react-icons/fa'; // Icons importieren
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import UploadPage from './pages/UploadPage';
@@ -54,7 +54,7 @@ function App() {
           }}
           aria-label="Toggle Dark Mode"
         >
-          {isDarkMode ? <FaSun size={24} color="#ffc107" /> : <FaMoon size={24} color="#333" />}
+          {isDarkMode ? <FaToggleOn size={24} color="#0455ac" /> : <FaToggleOff size={24} color="#333" />}
         </button>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
