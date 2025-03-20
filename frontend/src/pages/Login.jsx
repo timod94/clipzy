@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { signIn } from '../lib/auth';
 import GoogleLoginButton from '../components/GoogleLoginButton';
+import { SlLogin } from "react-icons/sl";
 import '../App.css'
+
 
 const LoginPage = () => {
 
@@ -23,6 +25,7 @@ const LoginPage = () => {
   };
 
   return (
+    <div className='container-wrapper'>
     <div className="login-container">
       <div>
         <h1>Login</h1>
@@ -34,6 +37,7 @@ const LoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder='Username or mail address'
+              className='input-field'
               required
             />
           </div>
@@ -43,6 +47,7 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder='Password'
+              className='input-field'
               required
             />
           </div>
@@ -50,12 +55,17 @@ const LoginPage = () => {
             type="submit"
             className="login-button"
           >
-            Login
+            <SlLogin /> Sign In
           </button>
         </form>
       </div>
+
       <GoogleLoginButton />
+      <div className='register-link' >
+      Don't have an account ? <Link to="/register">Create one now</Link>
+      </div>
     </div>
+  </div>
   );
 };
 

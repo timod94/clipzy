@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut, auth } from '../lib/auth';
+import { SlLogout, SlLogin } from 'react-icons/sl';
+import { FaUpload } from "react-icons/fa";
+import logo from "../assets/logo/logo-transparent.png";
 import '../App.css';
 
 const NavBar = () => {
@@ -37,23 +40,26 @@ const NavBar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <Link to="/">Clipzy</Link>
+      
+        <Link to="/"><img src={logo} className="navbar-logo" alt="Clipzy logo" /></Link>
       </div>
-
+      <div className='navbar-middle'>
       {isAuthenticated ? (
           <>
-            <Link to="/upload">Upload here</Link>
+            <Link to="/upload" aria-label='Upload file'><FaUpload /> Upload
+            </Link>
             <button onClick={handleLogout} className="logout-button">
-              Logout
+            <SlLogout /> Logout
             </button>
           </>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+            <Link to="/login"><SlLogin /> Sign in</Link>
+            
           </>
         )}
-
+        </div>
+     
       <div className="navbar-right">
         <div className="dropdown">
           <button className="hamburger" onClick={toggleDropdown}>
@@ -65,7 +71,6 @@ const NavBar = () => {
             <div className={`dropdown-menu ${isDropdownOpen ? 'active' : ''}`}>
             <Link to="/profile" onClick={closeDropdown}>Profile</Link>
             <Link to="/video-gallery" onClick={closeDropdown}>Video Gallery</Link>
-            <Link to="/upload" onClick={closeDropdown}>Upload</Link>
             <Link to="/impressum" onClick={closeDropdown}>Impressum</Link>
           </div>
           )}
