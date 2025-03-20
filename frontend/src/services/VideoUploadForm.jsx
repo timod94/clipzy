@@ -25,6 +25,8 @@ const VideoUpload = () => {
     });
 
     const handleVideoUpload = async (files) => {
+        const token = localStorage.getItem('token');
+
         const videoFile = files[0];
     
         if (!videoFile) {
@@ -44,13 +46,19 @@ const VideoUpload = () => {
         try {
             const response = await fetch(`${API_BASE_URL}upload`, {
                 method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
                 body: formData
             });
     
-            if (!response.ok) {
+            if (response.status === 403) {
+                throw new Error('Please log in to upload videos.');
+              } else if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Upload failed. Please try again.');
-            }
+              }
+              
     
             const data = await response.json();
             setVideoUrl(data.videoUrl);
