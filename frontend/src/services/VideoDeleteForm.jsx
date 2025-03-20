@@ -14,7 +14,7 @@ const VideoDeleteForm = ({
 }) => {
 
   const handleDelete = async () => {
-    const result = await deleteVideo(videoKey, thumbnailKey); // Verwende deleteVideo hier
+    const result = await deleteVideo(videoKey, thumbnailKey);
 
     if (result.success) {
       alert('Video successfully deleted');
