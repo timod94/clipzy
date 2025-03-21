@@ -7,8 +7,8 @@ const { getVideoUrls } = require('../controllers/getVideoUrls');
 
 router.post('/upload', authenticateJWT,  upload.single('video'), videoController.uploadVideo);
 
-router.delete('/delete', videoController.deleteVideo);
+router.delete('/delete', authenticateJWT, videoController.deleteVideo);
 
-router.get('/',  getVideoUrls);
+router.get('/',  authenticateJWT, getVideoUrls);
 
 module.exports = router;

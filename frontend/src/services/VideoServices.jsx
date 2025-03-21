@@ -4,8 +4,17 @@ const API_BASE_URL = 'http://localhost:5000/api/videos/';
 
 export const getVideos = async () => {
   try {
-    
-    const response = await axios.get(API_BASE_URL);
+    const token = localStorage.getItem('token');
+
+    if(!token) {
+      throw new Error('No token found. Please log in.');
+    }
+
+    const response = await axios.get(API_BASE_URL, {
+      headers:{
+        Authorization: `Bearer ${token}`,
+      },
+    });
     console.log("Fetched videos:", response.data);
     return response.data;
    
@@ -16,12 +25,14 @@ export const getVideos = async () => {
 };
 
 export const deleteVideo = async (videoKey, thumbnailKey) => {
-
+const token = localStorage.getItem('token')
   try {
     const response = await fetch(`${API_BASE_URL}delete`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+        
       },
       body: JSON.stringify({ videoKey, thumbnailKey }),
     });

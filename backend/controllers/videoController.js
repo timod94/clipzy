@@ -21,7 +21,9 @@ const deleteFileFromS3 = async (fileKey) => {
 };
 
 exports.uploadVideo = (req, res) => {
+  const { title, description, visibility } = req.body;
   const videoFile = req.file;
+  const userId = req.user.id
 
   if (!videoFile) {
     return res.status(400).json({ error: 'No video file uplaoded' });
@@ -58,15 +60,32 @@ exports.uploadVideo = (req, res) => {
 
       s3.send(new PutObjectCommand(thumbnailUploadParams))
         .then(() => {
-          const videoUrl = videoFile.location;
-          const thumbnailUrl = `https://clipzy-bucket.s3.${process.env.AWS_REGION}.amazonaws.com/${thumbnailKey}`;
+          const video = new Video({
+            videoUrl,
+            filePath: videoFile.location,
+            visibility: visibility || 'public',
+            videoKey,
+            userId,
+            title: req.body.title
+          });
 
-
-          res.status(200).json({ videoUrl, thumbnailUrl, videoKey, thumbnailKey });
-        })
+          video.save()
+            .then(() => {
+              res.status(200).json({
+                videoUrl,
+                thumbnailUrl: `https://clipzy-bucket.s3.${process.env.AWS_REGION}.amazonaws.com/${thumbnailKey}`,
+                videoKey,
+                thumbnailKey,
+              });
+            })
+            .catch((err) => {
+              console.error('error saving video:', err);
+              res.status(500).json({ error: 'Failed to save video to the database'})
+            })
+         })
         .catch((err) => {
           console.error('Thumbnail upload failed:', err);
-          res.status(500).json({ error: 'Thumbain upload failed' });
+          res.status(500).json({ error: 'Thumbnail upload failed' });
         });
     })
     .on('error', (err) => {
@@ -81,13 +100,22 @@ exports.deleteVideo = async (req, res) => {
   if ( !videoKey || !thumbnailKey ) {
     return res.status(400).json({ error: 'Both video and thumbnail keys are required' });
   }
-
   try {
-    
+
+    const video = await Video.findOne({ videoKey });
+    if (!video) {
+      return res.status(404).json({ error: 'Video not found' });
+    }
+
+    if (video.userId.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'You are not authorized to delete this video' });
+    }
+
     await deleteFileFromS3(videoKey);
-    await deleteFileFromS3(thumbnailKey)
+    await deleteFileFromS3(thumbnailKey);
     
-  
+    await Video.deleteOne({ videoKey });
+    
     res.status(200).json({ message: 'Video file and thumbnail are successfully deleted' });
   } catch (error) {
     console.error('Cannot delete video file and thumbnail:', error);

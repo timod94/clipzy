@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaToggleOn, FaToggleOff } from 'react-icons/fa'; // Icons importieren
+import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import UploadPage from './pages/UploadPage';
@@ -14,7 +14,6 @@ import './App.css';
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Beim Laden der Seite das gespeicherte Theme setzen
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
@@ -25,7 +24,6 @@ function App() {
     }
   }, []);
 
-  // Funktion zum Umschalten des Themes
   const toggleTheme = () => {
     if (isDarkMode) {
       document.body.setAttribute("data-theme", "light");
