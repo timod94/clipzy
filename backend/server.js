@@ -7,7 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const passport = require('./config/passportConfig');
 const googleAuthRoutes = require('./routes/googleAuthRoutes');
 const session = require('express-session')
-
+const authMiddleware = require('./middleware/authMiddleware')
 const app = express();
 
 app.use(cors({

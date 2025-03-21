@@ -157,6 +157,7 @@ body {
 
 
 .delete-button {
+  margin-top: 20px;
   background: linear-gradient(135deg, #ff3b3b, #ff6b6b);
   color: white;
   padding: 10px 20px;
@@ -267,6 +268,10 @@ body {
   padding: 20px;
 }
 .video-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 25px;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -294,4 +299,91 @@ body {
 .impressum {
   margin-top: 100px;
   font-weight: bold;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: var(--register-login-bg);
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  background-color: #dad9d9;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.form-container textarea {
+  height: 120px;
+}
+
+.form-container button {
+  padding: 12px 20px;
+  border: none;
+  background-color: #0562c7;
+  font-size: 16px;
+  color: #ccc;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.form-container button:disabled {
+  background-color: #0562c7;
+  cursor: not-allowed;
+}
+
+.form-container button:hover {
+  background-color: #0562c7;
+}
+.visibility-selector {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.visibility-selector label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.visibility-selector select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #0562c7;
+  border-radius: 4px;
+  background-color: #dad9d9;
+  cursor: pointer;
+}
+
+.visibility-selector select:hover {
+  border-color: #888;
+}
+
+.visibility-selector select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.visibility-info {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
 }
