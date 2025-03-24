@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import VideoDeleteForm from './VideoDeleteForm';
+import VideoDeleteForm from '../components/VideoDeleteForm';
 import '../App.css';
 
 const VideoUpload = () => {
