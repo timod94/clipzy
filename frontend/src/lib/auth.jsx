@@ -48,4 +48,19 @@ export const register = async (credentials) => {
   } catch (error) {
     return { error: error.response?.data?.message || 'Registration failed' };
   }
+  
+};
+
+export const validateToken = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) return false;
+
+  try {
+    const response = await axios.get(`${API_URL}/validate-token`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data.isValid;
+  } catch (error) {
+    return false;
+  }
 };
