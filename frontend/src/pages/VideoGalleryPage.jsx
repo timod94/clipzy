@@ -7,7 +7,6 @@ const VideoGalleryPage = () => {
       <h1>Video Gallery</h1>
       <p>Explore all the available videos.</p>
 
-      {/* Video Gallery auf der eigenen Videogalerie-Seite */}
       <VideoGallery />
     </div>
   );

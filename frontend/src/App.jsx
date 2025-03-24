@@ -39,7 +39,6 @@ function App() {
     <Router>
       <div>
         <NavBar />
-        {/* Icon-Button zum Umschalten des Themes */}
         <button 
           onClick={toggleTheme} 
           style={{

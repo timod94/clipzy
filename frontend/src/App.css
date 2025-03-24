@@ -159,7 +159,7 @@ body {
 .delete-button {
   margin-top: 20px;
   background: linear-gradient(135deg, #ff3b3b, #ff6b6b);
-  color: white;
+  color: #ccc;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
@@ -343,7 +343,7 @@ body {
 }
 
 .form-container button:disabled {
-  background-color: #0562c7;
+  background-color: #036ddf;
   cursor: not-allowed;
 }
 

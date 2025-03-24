@@ -2,52 +2,54 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:5000/api/videos/';
 
+const getAuthToken = () => {
+  return localStorage.getItem('token');
+}
+
 export const getVideos = async () => {
   try {
-    const token = localStorage.getItem('token');
+    const token = getAuthToken();
 
-    if(!token) {
+    if (!token) {
       throw new Error('No token found. Please log in.');
     }
 
     const response = await axios.get(API_BASE_URL, {
-      headers:{
+      headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+
     console.log("Fetched videos:", response.data);
     return response.data;
-   
   } catch (error) {
     console.error('Error fetching videos:', error);
     throw error;
   }
 };
 
+
 export const deleteVideo = async (videoKey, thumbnailKey) => {
-const token = localStorage.getItem('token')
+  const token = getAuthToken();
+
+  if (!token) {
+    return { success: false, error: 'No token found. Please log in.' };
+  }
+
   try {
-    const response = await fetch(`${API_BASE_URL}delete`, {
-      method: 'DELETE',
+    const response = await axios.delete(`${API_BASE_URL}delete`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-        
+        'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ videoKey, thumbnailKey }),
+      data: { videoKey, thumbnailKey },
     });
-    console.log('Response from delete API:', response);
 
-    const data = await response.json();
-
-    console.log('Parsed response data:', data);
-
-    if (response.ok) {
-      console.log('Delete operation successful:', data);
-      return { success: true, data };
+    if (response.status === 200) {
+      console.log('Delete operation successful:', response.data);
+      return { success: true, data: response.data };
     } else {
-      console.error('Error deleting:', data.error || 'Delete operation failed!');
-      return { success: false, error: data.error || 'Delete operation failed!' };
+      console.error('Error deleting:', response.data.error || 'Delete operation failed!');
+      return { success: false, error: response.data.error || 'Delete operation failed!' };
     }
   } catch (error) {
     console.error('Error deleting:', error);

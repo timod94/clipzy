@@ -36,7 +36,6 @@ app.use('/api/videos', videoRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/auth', googleAuthRoutes);
 
-// check up route
 app.get('/', (req, res) => {
   res.send('Welcome to Clipzy Backend!');
 });
