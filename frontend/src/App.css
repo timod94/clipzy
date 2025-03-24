@@ -126,7 +126,9 @@ body {
 
 .login-button,
 .register-button,
-.logout-button {
+.logout-button,
+.share-button {
+  margin-top: 10px;
   padding: 0.75rem;
   background-color: var(--secondary-color);
   color: #c4c4c4;
@@ -140,7 +142,8 @@ body {
 }
 .login-button:hover,
 .register-button:hover,
-.logout-button:hover {
+.logout-button:hover,
+.share-button:hover {
   background-color: #0056b3;
   transform: translateY(-3px); 
 }
@@ -386,4 +389,39 @@ body {
   font-size: 14px;
   color: #555;
   margin-top: 5px;
+}
+
+/* Full-height container for the hero section */
+.hero-container {
+  height: 20vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+/* Text styling for the slogan */
+.hero-text h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.hero-text p {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  /* Responsiveness for mobile */
+  .hero-text h1 {
+    font-size: 3rem;
+  }
+
+  .hero-text p {
+    font-size: 1.2rem;
+  }
 }

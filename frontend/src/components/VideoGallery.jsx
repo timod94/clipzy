@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getVideos, deleteVideo } from '../services/VideoServices'; 
-import VideoDeleteForm from './VideoDeleteForm'
+import { getVideos } from '../services/VideoServices'; 
+import VideoDeleteForm from './VideoDeleteForm';
+import { MdOutlineIosShare } from "react-icons/md";
 import '../App.css';
 
 const S3_BUCKET_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
@@ -22,6 +23,7 @@ const VideoGallery = () => {
   const disableRightClick = (event) => {
     event.preventDefault();
   }
+
   useEffect(() => {
     const videoElements = document.querySelectorAll('video');
     videoElements.forEach((video) => {
@@ -39,18 +41,13 @@ const VideoGallery = () => {
     const fetchVideos = async () => {
       try {
         const videoData = await getVideos();
-        console.log("Fetched Video Data:", videoData);
         const videoWithThumbnails = videoData.map((video) => {
-          console.log("Video Daten:", video); 
           if (video.key) {
             const videoId = video.key.split('/')[1].split('_')[0];        
             const thumbnailKey = `thumbnails/${videoId}_thumbnail.png`; 
             const thumbnailUrl = `${S3_BUCKET_URL}${thumbnailKey}`;
-            const videoUrl= `${S3_BUCKET_URL}${video.key}`; 
+            const videoUrl = `${S3_BUCKET_URL}${video.key}`; 
 
-            console.log("Thumbnail URL für dieses Video:", thumbnailUrl);
-
-           
             return {
               ...video,
               thumbnailUrl,
@@ -62,10 +59,8 @@ const VideoGallery = () => {
           }
         });
 
-       
         setVideos(videoWithThumbnails);
       } catch (error) {
-        console.error("Error fetching videos:", error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -75,27 +70,12 @@ const VideoGallery = () => {
     fetchVideos();
   }, []);
 
-  const handleDelete = async (videoKey, thumbnailKey) => {
-    try {
-      const result = await deleteVideo(videoKey, thumbnailKey);
-
-      if (result.success) {
-        setVideos(videos.filter((video) => video.key !== videoKey));
-      } else {
-        alert(result.error);
-      }
-    } catch (error) {
-      console.error('Error deleting video:', error);
-      alert('Failed to delete video.');
-    }
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}. Please <a href='/login'>log in</a>to view videos.</div>
+    return <div>Error: {error}. Please <a href='/login'>log in</a> to view videos.</div>;
   }
 
   return (
@@ -110,21 +90,19 @@ const VideoGallery = () => {
               {/* Video mit Thumbnail als Poster */}
               <video width="300" poster={video.thumbnailUrl} controls controlsList='nodownload'>
                 <p>{video.description}</p>
-                <source src={video.url} type="video/mp4" />
+                <source src={video.videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <div>
-              <button onClick={() => handleCopyLink(video.videoUrl)}>share video</button>
-            </div>
-            {currentUserId && video.userId === currentUserId && (
-                <button
-                  onClick={() => handleDelete(video.key, video.thumbnailKey)}
-                  className="delete-button"
-                >
-                  Delete Video
-                </button>
+                <button onClick={() => handleCopyLink(video.videoUrl)} className='share-button'><MdOutlineIosShare /> Share</button>
+              </div>
+              {currentUserId && video.userId === currentUserId && (
+                <VideoDeleteForm
+                  videoKey={video.key}
+                  thumbnailKey={video.thumbnailKey}
+                  setVideos={setVideos}
+                />
               )}
-          
             </div>
           ))}
         </div>

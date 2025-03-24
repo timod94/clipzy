@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Impressum from './pages/Impressum';
+import HeroSection from './components/HeroSection';
 import './App.css';
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
         >
           {isDarkMode ? <FaToggleOn size={24} color="#0455ac" /> : <FaToggleOff size={24} color="#333" />}
         </button>
+        <HeroSection />
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route path="/video-gallery" element={<VideoGalleryPage />} />
