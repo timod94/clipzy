@@ -20,6 +20,9 @@
     "passport-google-oauth20": "^2.0.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0" 
   }
 }
