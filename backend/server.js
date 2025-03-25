@@ -8,7 +8,14 @@ const passport = require('./config/passportConfig');
 const googleAuthRoutes = require('./routes/googleAuthRoutes');
 const session = require('express-session')
 const authMiddleware = require('./middleware/authMiddleware')
-const app = express();
+
+const createApp = () => {
+  const app = express();
+  const server = app.listen(0); 
+  return { app, server };
+};
+
+module.exports = { createApp };
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -49,3 +56,5 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server runs on http://localhost:${port}`);
 });
+
+module.exports = { createApp };
