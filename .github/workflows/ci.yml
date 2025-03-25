@@ -58,7 +58,7 @@ jobs:
         GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         MONGODB_URI: mongodb://${{ vars.MONGO_TEST_USER || 'testuser' }}:${{ secrets.MONGO_TEST_PASSWORD || 'testpass' }}@localhost:27017
       run: |
-        npm install jest --save-dev
+        npm install
         npm test
 
     # Frontend-Schritte
