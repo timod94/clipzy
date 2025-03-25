@@ -8,8 +8,8 @@ on:
 
 env:
   NODE_VERSION: 18
-  BACKEND_PORT: 5000  
-  FRONTEND_PORT: 5173 
+  BACKEND_PORT: 3000
+  FRONTEND_PORT: 5173
 
 jobs:
   build-and-test:
@@ -39,15 +39,16 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
         cache-dependency-path: |
-          **/package-lock.json
-          client/**/package-lock.json
+          frontend/package-lock.json
+          backend/package-lock.json
 
-    - name: Install dependencies
-      run: |
-        npm install
-        cd client && npm install && cd ..
+    # Backend-Schritte
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm ci
 
     - name: Run backend tests
+      working-directory: ./backend
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -56,25 +57,26 @@ jobs:
         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         MONGODB_URI: mongodb://${{ vars.MONGO_TEST_USER || 'testuser' }}:${{ secrets.MONGO_TEST_PASSWORD || 'testpass' }}@localhost:27017
-      run: |
-        npm test
+      run: npm test
+
+    # Frontend-Schritte
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm ci
 
     - name: Run frontend tests
-      working-directory: ./client
+      working-directory: ./frontend
       env:
-        REACT_APP_API_BASE_URL: http://localhost:${{ env.BACKEND_PORT }}
-        REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
         VITE_API_BASE_URL: http://localhost:${{ env.BACKEND_PORT }}
-      run: |
-        npm test
+        VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+      run: npm test
 
     - name: Build frontend
-      working-directory: ./client
+      working-directory: ./frontend
       env:
-        VITE_API_BASE_URL: /api # Produktions-API Basis-URL
+        VITE_API_BASE_URL: /api
         VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
-      run: |
-        npm run build
+      run: npm run build
 
   docker-build:
     needs: build-and-test
@@ -91,25 +93,22 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-    - name: Build and push Docker image
+    - name: Build and push Backend Docker image
       uses: docker/build-push-action@v4
       with:
-        context: .
+        context: ./backend
         push: ${{ github.ref == 'refs/heads/main' }}
         tags: |
           ${{ secrets.DOCKER_HUB_USERNAME }}/backend:latest
           ${{ secrets.DOCKER_HUB_USERNAME }}/backend:${{ github.sha }}
         build-args: |
           NODE_VERSION=${{ env.NODE_VERSION }}
-          VITE_API_BASE_URL=/api
 
     - name: Build and push Frontend Docker image
       uses: docker/build-push-action@v4
       with:
-        context: ./client
+        context: ./frontend
         push: ${{ github.ref == 'refs/heads/main' }}
         tags: |
           ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:latest
           ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${{ github.sha }}
-        build-args: |
-          VITE_API_BASE_URL=/api
