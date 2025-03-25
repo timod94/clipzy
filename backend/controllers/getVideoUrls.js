@@ -14,39 +14,31 @@ exports.getVideoUrls = async (req, res) => {
     if (!data.Contents || data.Contents.length === 0) {
       return res.status(404).json({ error: 'No videos found' });
     }
-    
-    const videos = await Video.find({});
 
+    const userId = req.user.id; 
+    const videos = await Video.find({ userId }); 
+
+ 
     const videoUrls = data.Contents.map((video) => {
       const videoUrl = `https://clipzy-bucket.s3.${process.env.AWS_REGION}.amazonaws.com/${video.Key}`;
-
+      
+ 
       const dbVideo = videos.find(v => v.videoKey === video.Key);
 
-      if (dbVideo) {
-        if (dbVideo.visibility === 'public') {
-          return {
-            url: videoUrl,
-            key: video.Key,
-            title: dbVideo.title,
-            visibility: dbVideo.visibility,
-            userId: dbVideo.userId,
-          };
-        }
 
-        if (dbVideo.visibility === 'private' && req.user && dbVideo.userId.toString() === req.user.id) {
-          return {
-            url: videoUrl,
-            key: video.Key,
-            title: dbVideo.title,
-            visibility: dbVideo.visibility,
-            userId: dbVideo.userId,
-          };
-        }
+      if (dbVideo) {
+        return {
+          url: videoUrl,
+          key: video.Key,
+          title: dbVideo.title,
+          description: dbVideo.description,
+          visibility: dbVideo.visibility,
+          userId: dbVideo.userId,
+        };
       }
 
       return null;
-
-    }).filter(video => video !== null);
+    }).filter(video => video !== null); 
 
     res.status(200).json(videoUrls);
   } catch (error) {

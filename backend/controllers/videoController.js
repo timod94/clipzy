@@ -66,7 +66,8 @@ exports.uploadVideo = (req, res) => {
             visibility: visibility || 'public',
             videoKey,
             userId,
-            title: req.body.title
+            title: req.body.title,
+            description: req.body.description
           });
 
           video.save()

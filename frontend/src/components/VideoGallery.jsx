@@ -87,7 +87,7 @@ const VideoGallery = () => {
           {videos.map((video, index) => (
             <div key={index} className="video-card">
               <h3 className='video-title'>{video.title}</h3>
-              <h2>{video.description}</h2>
+              <h2 className='video-description'>{video.description}</h2>
               {/* Video mit Thumbnail als Poster */}
               <video width="300" poster={video.thumbnailUrl} controls controlsList='nodownload'>
                 <p>{video.description}</p>

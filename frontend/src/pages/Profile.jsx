@@ -30,6 +30,7 @@ const Profile = () => {
     
     <div className='profile'>
       <h1>Welcome to your profile. </h1>
+      <VideoGallery/>
     </div>
   )
 }

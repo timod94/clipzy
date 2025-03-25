@@ -419,6 +419,11 @@ body {
   color: var(--text-color);
   margin-top: 5px;
 }
+.video-description {
+  font-size: 14px;
+  color: var(--text-color);
+  margin-top: 10px;
+}
 
 /* ======================== */
 /* === MEDIA QUERIES === */
