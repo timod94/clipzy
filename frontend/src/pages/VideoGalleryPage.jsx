@@ -5,8 +5,6 @@ const VideoGalleryPage = () => {
   return (
     <div className='video-gallery'>
       <h1>Video Gallery</h1>
-      <p>Explore all the available videos.</p>
-
       <VideoGallery />
     </div>
   );

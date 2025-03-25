@@ -5,8 +5,7 @@ const HeroSection = () => {
   return (
     <div className="hero-container">
       <div className="hero-text">
-        <h1>Clipzy</h1>
-        <p>Share Smarter. Grow Faster.Measure everyting</p>
+        <p>Share Smarter. Grow Faster. Measure everything</p>
       </div>
     </div>
   );

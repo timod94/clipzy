@@ -29,8 +29,8 @@ const Profile = () => {
   return (
     
     <div className='profile'>
-      <h1>Welcome (user) to your profile. </h1>
-  <VideoGallery /></div>
+      <h1>Welcome to your profile. </h1>
+    </div>
   )
 }
 

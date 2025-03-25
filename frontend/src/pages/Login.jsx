@@ -53,7 +53,7 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className="login-button"
+            className="action-button"
           >
             <SlLogin /> Sign In
           </button>

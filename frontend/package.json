@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "@aws-amplify/auth": "^6.11.5",
+    "@svgr/plugin-svgo": "^8.1.0",
     "@typescript-eslint/utils": "^5.62.0",
     "aws-amplify": "^6.13.5",
     "axios": "^1.8.3",
+    "css-select": "^5.1.0",
     "oidc-client-ts": "^3.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -24,6 +26,7 @@
     "react-oidc-context": "^3.2.0",
     "react-router-dom": "^7.3.0",
     "rollup": "^4.35.0",
+    "svgo": "^3.3.2",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -33,11 +36,16 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.0.6",
     "eslint": "^8.57.1",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.1",
     "react-scripts": "^5.0.1",
+    "tailwindcss": "^4.0.15",
     "vite": "^6.2.0"
   },
   "proxy": "https://clipzy.auth.eu-central-1.amazoncognito.com"

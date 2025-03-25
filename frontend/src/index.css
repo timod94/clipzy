@@ -14,7 +14,7 @@ a {
 }
 
 a:hover {
-  color: #0056b3;
+  color: #1167c4;
 }
 
 main {
@@ -22,9 +22,3 @@ main {
   background-color: var(--background-color); 
 }
 
-
-.full-width-container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-}

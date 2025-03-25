@@ -48,7 +48,7 @@ const NavBar = () => {
           <>
             <Link to="/upload" aria-label='Upload file'><FaUpload /> Upload
             </Link>
-            <button onClick={handleLogout} className="logout-button">
+            <button onClick={handleLogout} className="action-button">
             <SlLogout /> Logout
             </button>
           </>

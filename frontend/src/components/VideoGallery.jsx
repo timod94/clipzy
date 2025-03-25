@@ -75,7 +75,7 @@ const VideoGallery = () => {
   }
 
   if (error) {
-    return <div>Error: {error}. Please <a href='/login'>log in</a> to view videos.</div>;
+    return <div>Please <a href='/login'>log in</a> to view the video gallery.</div>;
   }
 
   return (
@@ -86,15 +86,17 @@ const VideoGallery = () => {
         <div className="video-grid">
           {videos.map((video, index) => (
             <div key={index} className="video-card">
-              <h3>{video.title}</h3>
+              <h3 className='video-title'>{video.title}</h3>
+              <h2>{video.description}</h2>
               {/* Video mit Thumbnail als Poster */}
               <video width="300" poster={video.thumbnailUrl} controls controlsList='nodownload'>
                 <p>{video.description}</p>
                 <source src={video.videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+             
               <div>
-                <button onClick={() => handleCopyLink(video.videoUrl)} className='share-button'><MdOutlineIosShare /> Share</button>
+                <button onClick={() => handleCopyLink(video.videoUrl)} className='action-button'><MdOutlineIosShare /> Share</button>
               </div>
               {currentUserId && video.userId === currentUserId && (
                 <VideoDeleteForm

@@ -52,7 +52,7 @@ function App() {
           }}
           aria-label="Toggle Dark Mode"
         >
-          {isDarkMode ? <FaToggleOn size={24} color="#0455ac" /> : <FaToggleOff size={24} color="#333" />}
+          {isDarkMode ? <FaToggleOn size={24} color="#5187dd" /> : <FaToggleOff size={24} color="#333" />}
         </button>
         <HeroSection />
         <Routes>
