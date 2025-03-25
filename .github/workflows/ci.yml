@@ -1,10 +1,7 @@
-name: CI Pipeline
+name: Build and Upload Artifact
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -13,25 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      # Checkout der Codebasis
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      # Node.js Setup (falls notwendig)
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-    - name: Install dependencies
-      run: npm install
+      # Installiere Abhängigkeiten und baue das Projekt (Beispiel)
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run tests
-      run: npm test
+      - name: Build project
+        run: npm run build  # Dieser Schritt könnte z.B. den Build in ./dist oder ./build erzeugen
 
-    - name: Build React app
-      run: npm run build
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build
-        path: build/
+      # Lade das Build-Verzeichnis als Artifact hoch
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-build-artifact  # Name des Artifacts
+          path: ./dist  # Pfad zum Verzeichnis oder Datei, die hochgeladen werden soll
