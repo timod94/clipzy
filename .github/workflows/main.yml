@@ -52,7 +52,7 @@ jobs:
     - name: Run backend tests
       working-directory: ./backend
       env:
-        MONGO_URI: mongodb://testuser:testpass@localhost:27017/clipzy-test
+        MONGO_URI: mongodb://admin:password@localhost:27017/clipzy-test
         JWT_SECRET: test-secret
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
