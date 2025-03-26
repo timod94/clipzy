@@ -15,6 +15,7 @@
     "@aws-amplify/auth": "^6.11.5",
     "@svgr/plugin-svgo": "^8.1.0",
     "@typescript-eslint/utils": "^5.62.0",
+    "@videojs/themes": "^1.0.1",
     "aws-amplify": "^6.13.5",
     "axios": "^1.8.3",
     "css-select": "^5.1.0",
@@ -28,7 +29,8 @@
     "rollup": "^4.35.0",
     "svgo": "^3.3.2",
     "uuid": "^11.1.0",
-    "video.js": "^8.22.0"
+    "video.js": "^8.22.0",
+    "videojs": "^1.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

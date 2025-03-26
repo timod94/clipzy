@@ -46,7 +46,7 @@ exports.uploadVideo = (req, res) => {
       count: 1,
       folder: path.dirname(thumbnailPath),
       filename: path.basename(thumbnailPath),
-      size: '320x240',
+      size: '640x360',
     })
     .on('end', () => {
 

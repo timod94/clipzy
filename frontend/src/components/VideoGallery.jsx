@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getVideos } from '../services/VideoServices'; 
 import VideoDeleteForm from './VideoDeleteForm';
+import VideoContainer from './VideoContainer';
 import { MdOutlineIosShare } from "react-icons/md";
 import '../App.css';
 
-const S3_BUCKET_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
+const S3_CLOUDFRONT_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
 
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
@@ -20,23 +21,6 @@ const VideoGallery = () => {
     }
   }, []);
 
-  const disableRightClick = (event) => {
-    event.preventDefault();
-  }
-
-  useEffect(() => {
-    const videoElements = document.querySelectorAll('video');
-    videoElements.forEach((video) => {
-      video.addEventListener('contextmenu', disableRightClick);
-    });
-
-    return () => {
-      videoElements.forEach((video) => {
-        video.removeEventListener('contextmenu', disableRightClick);
-      });
-    };
-  }, [videos]);
-
   useEffect(() => {
     const fetchVideos = async () => {
       try {
@@ -45,8 +29,8 @@ const VideoGallery = () => {
           if (video.key) {
             const videoId = video.key.split('/')[1].split('_')[0];        
             const thumbnailKey = `thumbnails/${videoId}_thumbnail.png`; 
-            const thumbnailUrl = `${S3_BUCKET_URL}${thumbnailKey}`;
-            const videoUrl = `${S3_BUCKET_URL}${video.key}`; 
+            const thumbnailUrl = `${S3_CLOUDFRONT_URL}${thumbnailKey}`;
+            const videoUrl = `${S3_CLOUDFRONT_URL}${video.key}`; 
 
             return {
               ...video,
@@ -86,18 +70,18 @@ const VideoGallery = () => {
         <div className="video-grid">
           {videos.map((video, index) => (
             <div key={index} className="video-card">
+
               <h3 className='video-title'>{video.title}</h3>
               <h2 className='video-description'>{video.description}</h2>
-              {/* Video mit Thumbnail als Poster */}
-              <video width="300" poster={video.thumbnailUrl} controls controlsList='nodownload'>
-                <p>{video.description}</p>
-                <source src={video.videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-             
+
+              <VideoContainer videos={videos} />
+
               <div>
-                <button onClick={() => handleCopyLink(video.videoUrl)} className='action-button'><MdOutlineIosShare /> Share</button>
+                <button onClick={() => handleCopyLink(video.videoUrl)} className='action-button'>
+                  <MdOutlineIosShare /> Share
+                </button>
               </div>
+
               {currentUserId && video.userId === currentUserId && (
                 <VideoDeleteForm
                   videoKey={video.key}
@@ -105,6 +89,7 @@ const VideoGallery = () => {
                   setVideos={setVideos}
                 />
               )}
+
             </div>
           ))}
         </div>
