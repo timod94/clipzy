@@ -5,7 +5,7 @@ import VideoContainer from './VideoContainer';
 import { MdOutlineIosShare } from "react-icons/md";
 import '../App.css';
 
-const S3_CLOUDFRONT_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
+const S3_BUCKET_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
 
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
@@ -29,8 +29,8 @@ const VideoGallery = () => {
           if (video.key) {
             const videoId = video.key.split('/')[1].split('_')[0];        
             const thumbnailKey = `thumbnails/${videoId}_thumbnail.png`; 
-            const thumbnailUrl = `${S3_CLOUDFRONT_URL}${thumbnailKey}`;
-            const videoUrl = `${S3_CLOUDFRONT_URL}${video.key}`; 
+            const thumbnailUrl = `${S3_BUCKET_URL}${thumbnailKey}`;
+            const videoUrl = `${S3_BUCKET_URL}${video.key}`; 
 
             return {
               ...video,
@@ -74,10 +74,10 @@ const VideoGallery = () => {
               <h3 className='video-title'>{video.title}</h3>
               <h2 className='video-description'>{video.description}</h2>
 
-              <VideoContainer videos={videos} />
+              <VideoContainer videoUrl={video.videoUrl} thumbnailUrl={video.thumbnailUrl} />
 
               <div>
-                <button onClick={() => handleCopyLink(video.videoUrl)} className='action-button'>
+                <button onClick={() => handleShare(video._id)} className='action-button'>
                   <MdOutlineIosShare /> Share
                 </button>
               </div>
@@ -98,8 +98,10 @@ const VideoGallery = () => {
   );
 };
 
-const handleCopyLink = (videoUrl) => {
-  navigator.clipboard.writeText(videoUrl).then(() => {
+const handleShare = (videoId) => {
+  const shareableLink = `http://localhost:5173/sharedVideo/${videoId}`;
+  console.log('Generated Share Link:', shareableLink); // Debug
+  navigator.clipboard.writeText(shareableLink).then(() => {
     alert('Link copied!');
   });
 };

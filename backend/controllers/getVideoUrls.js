@@ -27,13 +27,17 @@ exports.getVideoUrls = async (req, res) => {
 
 
       if (dbVideo) {
+        const sharedLink = `http://localhost:5173/sharedVideo/${dbVideo._id}`;
+
         return {
+          sharedLink,
           url: videoUrl,
           key: video.Key,
           title: dbVideo.title,
           description: dbVideo.description,
           visibility: dbVideo.visibility,
           userId: dbVideo.userId,
+          _id: dbVideo._id,
         };
       }
 

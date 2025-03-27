@@ -1,13 +1,11 @@
 import React from 'react';
 import VideoPlayer from './VideoPlayer';
 
-const VideoContainer = ({ videos }) => {
+const VideoContainer = ({ videoUrl, thumbnailUrl }) => {
 
-    if (!videos || videos.length === 0) {
+    if (!videoUrl) {
         return <p>Loading...</p>
     }
-
-    const { videoUrl, thumbnailUrl } = videos[0];
 
     return (
         <div className='video-container'>
