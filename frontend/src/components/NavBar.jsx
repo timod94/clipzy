@@ -70,7 +70,7 @@ const NavBar = () => {
           {isDropdownOpen && (
             <div className={`dropdown-menu ${isDropdownOpen ? 'active' : ''}`}>
             <Link to="/profile" onClick={closeDropdown}>Profile</Link>
-            <Link to="/video-gallery" onClick={closeDropdown}>Video Gallery</Link>
+            <Link to="/">Analytics</Link>
             <Link to="/impressum" onClick={closeDropdown}>Impressum</Link>
           </div>
           )}

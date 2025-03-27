@@ -53,6 +53,8 @@ const VideoUpload = () => {
         const API_BASE_URL = 'http://localhost:5000/api/videos/';
     
         try {
+            console.log(videoFile)
+            console.log(videoFile.location)
             const response = await fetch(`${API_BASE_URL}upload`, {
                 method: 'POST',
                 headers: {
