@@ -32,6 +32,7 @@ exports.uploadVideo = (req, res) => {
   const videoKey = videoFile.key;
   const videoUrl = videoFile.location;
  
+  console.log(videoUrl)
 
   const videoKeyParts = videoKey.split('/');
   const fileName = videoKeyParts[1]; 

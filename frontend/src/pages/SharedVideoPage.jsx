@@ -13,7 +13,7 @@ const SharedVideoPage = () => {
     const fetchVideoData = async () => {
       try {
         console.log("FetchById triggered!")
-        const response = await fetch(`/api/videos/${videoId}`);
+        const response = await fetch(`http://localhost:5000/api/videos/${videoId}`);
         console.log("FetchById responses!")
         console.log(response)
         if (!response.ok) {
@@ -34,10 +34,6 @@ const SharedVideoPage = () => {
     }
   }, [videoId]);
 
-  if (loading) {
-    return <div>Loading...</div>; // Zeige einen Ladezustand, bis die Daten geladen sind
-  }
-
   if (error) {
     return <div>An error occurred while fetching the video: {error}</div>;
   }
@@ -53,7 +49,7 @@ const SharedVideoPage = () => {
 
       {/* Hier wird der VideoPlayer eingebunden */}
       {videoData.videoUrl ? (
-        <VideoContainer video={videoUrl} />  
+        <VideoContainer videoUrl={videoData.videoUrl} />  
       ) : (
         <div>No video URL available</div>
       )}
