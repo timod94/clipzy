@@ -5,21 +5,6 @@ const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const s3 = require('../config/aws');
 const Video = require('../models/Video');
 
-const deleteFileFromS3 = async (fileKey) => {
-  const deleteParams = {
-    Bucket: 'clipzy-bucket',
-    Key: fileKey,
-  };
-
-  try {
-    await s3.send(new DeleteObjectCommand(deleteParams));
-    console.log(`File ${fileKey} successfully deleted.`);
-  } catch (error) {
-    console.error(`Upload failed: ${fileKey}:`, error);
-    throw error;
-  }
-};
-
 exports.uploadVideo = (req, res) => {
   const { title, description, visibility } = req.body;
   const videoFile = req.file;
@@ -29,10 +14,12 @@ exports.uploadVideo = (req, res) => {
     return res.status(400).json({ error: 'No video file uplaoded' });
   }
 
+  const cloudfrontDomain = process.env.CLOUDFRONT_DOMAIN;
   const videoKey = videoFile.key;
-  const videoUrl = videoFile.location;
+
+  const cloudfrontUrl = `${cloudfrontDomain}/${videoKey}`;
+  console.log('CloudFront URL:', cloudfrontUrl);
  
-  console.log(videoUrl)
 
   const videoKeyParts = videoKey.split('/');
   const fileName = videoKeyParts[1]; 
@@ -62,8 +49,7 @@ exports.uploadVideo = (req, res) => {
       s3.send(new PutObjectCommand(thumbnailUploadParams))
         .then(() => {
           const video = new Video({
-            videoUrl,
-            filePath: videoFile.location,
+            videoUrl: cloudfrontUrl,
             visibility: visibility || 'public',
             videoKey,
             userId,
@@ -74,8 +60,8 @@ exports.uploadVideo = (req, res) => {
           video.save()
             .then(() => {
               res.status(200).json({
-                videoUrl,
-                thumbnailUrl: `https://clipzy-bucket.s3.${process.env.AWS_REGION}.amazonaws.com/${thumbnailKey}`,
+                videoUrl: cloudfrontUrl,
+                thumbnailUrl: `${cloudfrontDomain}/${thumbnailKey}`,
                 videoKey,
                 thumbnailKey,
               });
@@ -94,6 +80,21 @@ exports.uploadVideo = (req, res) => {
       console.error('Cannot create thumbnail:', err);
       res.status(500).json({ error: 'Cannot create thumbnail. Please try again!' });
     });
+};
+
+const deleteFileFromS3 = async (fileKey) => {
+  const deleteParams = {
+    Bucket: 'clipzy-bucket',
+    Key: fileKey,
+  };
+
+  try {
+    await s3.send(new DeleteObjectCommand(deleteParams));
+    console.log(`File ${fileKey} successfully deleted.`);
+  } catch (error) {
+    console.error(`Upload failed: ${fileKey}:`, error);
+    throw error;
+  }
 };
 
 exports.deleteVideo = async (req, res) => {
