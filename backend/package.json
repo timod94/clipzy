@@ -6,6 +6,7 @@
     "@aws-sdk/s3-request-presigner": "^3.758.0",
     "aws-sdk": "^2.1692.0",
     "bcryptjs": "^3.0.2",
+    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -19,10 +20,10 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0"
   },
- "scripts": {
-  "test": "NODE_ENV=test jest --detectOpenHandles --forceExit",
-  "test:watch": "NODE_ENV=test jest --watch"
-},
+  "scripts": {
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit",
+    "test:watch": "NODE_ENV=test jest --watch"
+  },
   "devDependencies": {
     "jest": "^29.7.0",
     "supertest": "^7.1.0"

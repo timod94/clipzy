@@ -1,0 +1,104 @@
+{
+    "family": "clipzy-task",
+    "networkMode": "awsvpc",
+    "executionRoleArn": "arn:aws:iam::202533538428:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::202533538428:role/ecsTaskRole",
+    "containerDefinitions": [
+      {
+        "name": "mongo",
+        "image": "mongo:latest",
+        "healthCheck": {
+          "command": ["CMD-SHELL", "pgrep mongod || exit 1"],
+          "interval": 30,
+          "timeout": 5,
+          "retries": 3,
+          "startPeriod": 20
+        },
+        "essential": true,
+        "portMappings": [{"containerPort": 27017}],
+        "mountPoints": [
+          {
+            "sourceVolume": "mongo-data",
+            "containerPath": "/data/db"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/clipzy",
+            "awslogs-region": "eu-central-1",
+            "awslogs-stream-prefix": "mongo"
+          }
+        }
+      },
+      {
+        "name": "backend",
+        "image": "202533538428.dkr.ecr.eu-central-1.amazonaws.com/clipzy-backend:latest",
+        "essential": true,
+        "portMappings": [{"containerPort": 5000}],
+        "secrets": [
+          {"name": "MONGO_URI", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:MONGO_URI::"},
+          {"name": "AWS_ACCESS_KEY_ID", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:AWS_ACCESS_KEY_ID::"},
+          {"name": "AWS_SECRET_ACCESS_KEY", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:AWS_SECRET_ACCESS_KEY::"},
+          {"name": "AWS_SESSION_TOKEN", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:AWS_SESSION_TOKEN::"},
+          {"name": "S3_BUCKET", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:S3_BUCKET::"},
+          {"name": "AWS_REGION", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:AWS_REGION::"},
+          {"name": "NODE_ENV", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:NODE_ENV::"},
+          {"name": "AUTH_SECRET", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:AUTH_SECRET::"},
+          {"name": "JWT_SECRET", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:JWT_SECRET::"},
+          {"name": "GOOGLE_CLIENT_ID", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:GOOGLE_CLIENT_ID::"},
+          {"name": "GOOGLE_CLIENT_SECRET", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:GOOGLE_CLIENT_SECRET::"},
+          {"name": "GOOGLE_REDIRECT_URI", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:GOOGLE_REDIRECT_URI::"},
+          {"name": "SESSION_SECRET", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:SESSION_SECRET::"},
+          {"name": "CLOUDFRONT_DOMAIN", "valueFrom": "arn:aws:secretsmanager:eu-central-1:202533538428:secret:clipzy/prod/env-W6DcNa:CLOUDFRONT_DOMAIN::"}
+        ],
+        "dependsOn": [{"containerName": "mongo", "condition": "START"}],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/clipzy",
+            "awslogs-region": "eu-central-1",
+            "awslogs-stream-prefix": "backend"
+          }
+        }
+      },
+      {
+        "name": "frontend",
+        "image": "202533538428.dkr.ecr.eu-central-1.amazonaws.com/clipzy-frontend:latest",
+        "essential": true,
+        "portMappings": [
+          {"containerPort": 5173, "hostPort": 5173}
+        ],
+        "dependsOn": [
+          {"containerName": "backend", "condition": "START"}
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/clipzy",
+            "awslogs-region": "eu-central-1",
+            "awslogs-stream-prefix": "frontend"
+          }
+        },
+        "environment": [
+          {
+            "name": "CHOKIDAR_USEPOLLING",
+            "value": "true"
+          }
+        ],
+        "command": ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+      }
+    ],
+    "volumes": [
+      {
+        "name": "mongo-data",
+        "efsVolumeConfiguration": {
+          "fileSystemId": "fs-0cf5bfe06c88da5e5",
+          "rootDirectory": "/"
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "1024",
+    "memory": "3072"
+  }

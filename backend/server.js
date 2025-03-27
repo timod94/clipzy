@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const passport = require('./config/passportConfig');
 const googleAuthRoutes = require('./routes/googleAuthRoutes');
 const session = require('express-session');
+const MongoStore = require('connect-mongo'); 
 const authMiddleware = require('./middleware/authMiddleware');
 
 const createApp = () => {
@@ -23,6 +24,11 @@ const createApp = () => {
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: 'sessions',
+      ttl: 14 * 24 * 60 * 60,
+    }),
     cookie: { secure: false }
   }));
 

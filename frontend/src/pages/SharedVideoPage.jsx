@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import VideoContainer from '../components/VideoContainer';
 
 const SharedVideoPage = () => {
-  const { videoId } = useParams(); // Hole die videoId aus der URL
-  const [videoData, setVideoData] = useState(null); // State für die Daten aus der DB
+  const { videoId } = useParams();
+  const [videoData, setVideoData] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Ladezustand
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     console.log("SharedVideoPage gets triggered!")

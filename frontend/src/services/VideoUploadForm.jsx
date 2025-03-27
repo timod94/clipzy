@@ -136,6 +136,8 @@ const VideoUpload = () => {
              {step === 3 && videoUrl && (
                 <div className="video-container">
                     <p className="upload-success">Video successfully uploaded!</p>
+                    <p>{title}</p>
+                    <p>{description}</p>
                     <div className="video-preview">
                         <video className="video-player" width="600" controls>
                             <source src={videoUrl} type="video/mp4" />
