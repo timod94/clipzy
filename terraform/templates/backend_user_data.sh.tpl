@@ -1,7 +1,7 @@
 #!/bin/bash
 LOG_FILE="/var/log/clipzy_backend_user_data.log"
 exec > >(tee -a $LOG_FILE) 2>&1
-echo "Starting Clipzy Backend setup at $(date)"
+echo "Starting to prepare Clipzy Backend setup at $(date)"
 
 # Install dependencies
 apt-get update -y
@@ -20,8 +20,4 @@ FRONTEND_URL=http://${frontend_ip}:5173
 MONGO_URI=mongodb://localhost:27017/clipzy
 EOT
 
-# Start services
-cd /home/ubuntu/clipzy
-docker-compose up -d
-
-echo "Backend setup completed at $(date)"
+echo "Backend prepared at $(date)"

@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ./frontend
+    container_name: clipzy_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_APP_URL=${VITE_APP_URL}
+    restart: always
+    command: npm run dev -- --host 0.0.0.0

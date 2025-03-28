@@ -4,7 +4,7 @@ import { FcGoogle } from 'react-icons/fc';
 
 const GoogleLoginButton = () => {
   return (
-    <a href="http://localhost:5000/api/auth/google">
+    <a href={`${import.meta.env.VITE_API_URL}/api/auth/google`}>
       <button className="action-button">
       <span> 
       <FcGoogle /> Sign in with Google
