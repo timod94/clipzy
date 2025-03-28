@@ -99,7 +99,7 @@ const VideoGallery = () => {
 };
 
 const handleShare = (videoId) => {
-  const shareableLink = `http://localhost:5173/sharedVideo/${videoId}`;
+  const shareableLink = `${FRONTEND_URL}/sharedVideo/${videoId}`;
   console.log('Generated Share Link:', shareableLink); // Debug
   navigator.clipboard.writeText(shareableLink).then(() => {
     alert('Link copied!');

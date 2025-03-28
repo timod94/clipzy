@@ -14,7 +14,7 @@ router.get('/google/callback',
       { expiresIn: '1h' }
     );
     req.session.user = req.user;
-    res.redirect(`http://localhost:5173/profile?token=${token}`);
+    res.redirect(`${FRONTEND_URL}/profile?token=${token}`);
   }
 );
 

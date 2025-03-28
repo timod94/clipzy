@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api/videos/';
+const API_BASE_URL = `${VITE_API_URL}/api/videos/`;
 
 const getAuthToken = () => {
   return localStorage.getItem('token');

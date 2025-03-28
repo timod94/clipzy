@@ -54,3 +54,11 @@ thumbnails
 
 *.bk
 *.png
+
+
+# Terraform files
+terraform/.terraform/
+*.tfstate
+*.tfstate.backup
+terraform/.terraform.lock.hcl
+terraform/.terraform/modules/

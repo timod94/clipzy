@@ -2,6 +2,7 @@ const { ListObjectsV2Command } = require('@aws-sdk/client-s3');
 const s3 = require('../config/aws');
 const Video = require('../models/Video');
 
+
 exports.getVideoUrls = async (req, res) => {
   const params = {
     Bucket: 'clipzy-bucket',
@@ -27,7 +28,7 @@ exports.getVideoUrls = async (req, res) => {
 
 
       if (dbVideo) {
-        const sharedLink = `http://localhost:5173/sharedVideo/${dbVideo._id}`;
+        const sharedLink = `${VITE_API_URL}/sharedVideo/${dbVideo._id}`;
 
         return {
           sharedLink,

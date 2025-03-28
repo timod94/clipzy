@@ -14,7 +14,7 @@ const createApp = () => {
   const app = express();
   
   app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL,
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -60,7 +60,7 @@ if (require.main === module) {
   
   const port = process.env.PORT || 5000;
   app.listen(port, () => {
-    console.log(`Server runs on http://localhost:${port}`);
+    console.log(`Server runs on http://${VITE_API_URL}:${port}`);
   });
 }
 

@@ -50,6 +50,5 @@
     "react-scripts": "^5.0.1",
     "tailwindcss": "^4.0.15",
     "vite": "^6.2.0"
-  },
-  "proxy": "https://clipzy.auth.eu-central-1.amazoncognito.com"
+  }
 }
