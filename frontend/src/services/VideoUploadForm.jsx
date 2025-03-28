@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import VideoDeleteForm from '../components/VideoDeleteForm';
 import '../App.css';
-require('dotenv').config()
 
 const VideoUpload = () => {
     const [uploading, setUploading] = useState(false);
@@ -51,7 +50,7 @@ const VideoUpload = () => {
         formData.append('description', description);
         formData.append('visibility', visibility);
     
-        const API_BASE_URL = `${process.env.VITE_API_URL}/api/videos/`;
+        const API_BASE_URL = 'http://localhost:5000/api/videos/';
     
         try {
             console.log(videoFile)

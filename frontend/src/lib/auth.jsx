@@ -1,7 +1,6 @@
 import axios from 'axios';
-require('dotenv').config()
 
-const API_URL = `${process.env.VITE_API_URL}/api/auth`;
+const API_URL = 'http://localhost:5000/api/auth';
 
 export const handleGoogleAuthRedirect = () => {
   const urlParams = new URLSearchParams(window.location.search);

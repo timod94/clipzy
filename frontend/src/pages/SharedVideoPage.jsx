@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import VideoContainer from '../components/VideoContainer';
-require('dotenv').config()
 
 const SharedVideoPage = () => {
   const { videoId } = useParams();
@@ -14,7 +13,7 @@ const SharedVideoPage = () => {
     const fetchVideoData = async () => {
       try {
         console.log("FetchById triggered!")
-        const response = await fetch(`${process.env.VITE_API_URL}/api/videos/${videoId}`);
+        const response = await fetch(`http://localhost:5000/api/videos/${videoId}`);
         console.log("FetchById responses!")
         console.log(response)
         if (!response.ok) {

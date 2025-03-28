@@ -8,7 +8,6 @@ services:
     volumes:
       - ./data:/data/db
     restart: always
-
   server:
     build: ./backend
     container_name: clipzy_backend
@@ -24,3 +23,20 @@ services:
       MONGO_URI: mongodb://mongo:27017/clipzy
       AUTH_SECRET: ${AUTH_SECRET}
       JWT_SECRET: ${JWT_SECRET}
+    
+  frontend:
+    build:
+      context: ./frontend  
+    container_name: clipzy_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app  
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - server
+    command: npm run dev -- --host 0.0.0.0  
+
+
+

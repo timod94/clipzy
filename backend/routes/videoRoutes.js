@@ -11,6 +11,6 @@ router.delete('/delete', authenticateJWT, videoController.deleteVideo);
 
 router.get('/',  authenticateJWT, getVideoUrls);
 
-router.get('/:videoId', videoController.getVideoById); // Route zum Abrufen eines Videos nach videoId
+router.get('/:videoId', videoController.getVideoById); 
   
 module.exports = router;
