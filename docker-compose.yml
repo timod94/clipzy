@@ -39,7 +39,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - server
-    command: npm run dev -- --host 0.0.0.0  
+    command: npm start -- --host 0.0.0.0  
 
 
 

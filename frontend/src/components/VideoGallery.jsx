@@ -99,8 +99,8 @@ const VideoGallery = () => {
 };
 
 const handleShare = (videoId) => {
-  const shareableLink = `http://localhost:5173/sharedVideo/${videoId}`;
-  console.log('Generated Share Link:', shareableLink); // Debug
+  const shareableLink = `${import.meta.env.VITE_APP_URL}/sharedVideo/${videoId}`;
+  console.log('Generated Share Link:', shareableLink);
   navigator.clipboard.writeText(shareableLink).then(() => {
     alert('Link copied!');
   });

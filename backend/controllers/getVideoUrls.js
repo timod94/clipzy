@@ -27,7 +27,7 @@ exports.getVideoUrls = async (req, res) => {
 
 
       if (dbVideo) {
-        const sharedLink = `http://localhost:5173/sharedVideo/${dbVideo._id}`;
+        const sharedLink = `${process.env.VITE_API_URL}/sharedVideo/${dbVideo._id}`;
 
         return {
           sharedLink,
