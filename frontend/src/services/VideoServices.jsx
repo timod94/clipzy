@@ -1,6 +1,7 @@
 import axios from 'axios';
+require('dotenv').config()
 
-const API_BASE_URL = `${VITE_API_URL}/api/videos/`;
+const API_BASE_URL = `${process.env.VITE_API_URL}/api/videos/`;
 
 const getAuthToken = () => {
   return localStorage.getItem('token');

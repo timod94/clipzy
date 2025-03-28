@@ -1,6 +1,7 @@
 const { ListObjectsV2Command } = require('@aws-sdk/client-s3');
 const s3 = require('../config/aws');
 const Video = require('../models/Video');
+require('dotenv').config()
 
 
 exports.getVideoUrls = async (req, res) => {
@@ -28,7 +29,7 @@ exports.getVideoUrls = async (req, res) => {
 
 
       if (dbVideo) {
-        const sharedLink = `${VITE_API_URL}/sharedVideo/${dbVideo._id}`;
+        const sharedLink = `${process.env.VITE_API_URL}/sharedVideo/${dbVideo._id}`;
 
         return {
           sharedLink,

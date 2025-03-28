@@ -53,7 +53,7 @@ server/thumbnails/
 thumbnails
 
 *.bk
-*.png
+
 
 
 # Terraform files

@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+require('dotenv').config()
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -14,7 +15,7 @@ router.get('/google/callback',
       { expiresIn: '1h' }
     );
     req.session.user = req.user;
-    res.redirect(`${FRONTEND_URL}/profile?token=${token}`);
+    res.redirect(`${process.env.FRONTEND_URL}/profile?token=${token}`);
   }
 );
 

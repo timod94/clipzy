@@ -4,6 +4,7 @@ import VideoDeleteForm from './VideoDeleteForm';
 import VideoContainer from './VideoContainer';
 import { MdOutlineIosShare } from "react-icons/md";
 import '../App.css';
+require('dotenv').config()
 
 const S3_BUCKET_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
 
@@ -99,7 +100,7 @@ const VideoGallery = () => {
 };
 
 const handleShare = (videoId) => {
-  const shareableLink = `${FRONTEND_URL}/sharedVideo/${videoId}`;
+  const shareableLink = `${process.env.FRONTEND_URL}/sharedVideo/${videoId}`;
   console.log('Generated Share Link:', shareableLink); // Debug
   navigator.clipboard.writeText(shareableLink).then(() => {
     alert('Link copied!');
