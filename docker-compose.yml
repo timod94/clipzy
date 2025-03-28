@@ -16,6 +16,7 @@ services:
     depends_on:
       - mongo
     environment:
+      FRONTEND_URL: ${FRONTEND_URL}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
@@ -33,6 +34,8 @@ services:
     volumes:
       - ./frontend:/app  
     environment:
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_APP_URL=${VITE_APP_URL}
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - server
