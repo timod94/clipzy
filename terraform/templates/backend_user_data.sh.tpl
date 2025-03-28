@@ -16,7 +16,6 @@ git clone https://github.com/timod94/clipzy /home/ubuntu/clipzy
 
 # Configure environment
 cat <<EOT > /home/ubuntu/clipzy/backend/.env
-BACKEND_URL=http://${aws_eip.clipzy_backend_eip.public_ip}:5000
 FRONTEND_URL=http://${frontend_ip}:5173
 MONGO_URI=mongodb://localhost:27017/clipzy
 EOT

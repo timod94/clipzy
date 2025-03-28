@@ -15,7 +15,7 @@ systemctl start docker
 git clone https://github.com/timod94/clipzy /home/ubuntu/clipzy
 
 # Configure environment
-cat <<EOT > /home/ubuntu/clipzy/.env
+cat <<EOT > /home/ubuntu/clipzy/frontend/.env
 VITE_API_URL=http://${backend_ip}:5000
 EOT
 

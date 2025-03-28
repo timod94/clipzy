@@ -128,14 +128,14 @@ data "aws_ami" "ubuntu" {
 # Elastic IPs zuerst definieren
 #########################
 resource "aws_eip" "clipzy_frontend_eip" {
-  vpc   = true
+  domain = "vpc"
   tags = merge(local.common_tags, {
     Name = "${local.project_name}-frontend-eip"
   })
 }
 
 resource "aws_eip" "clipzy_backend_eip" {
-  vpc   = true
+  domain = "vpc"
   tags = merge(local.common_tags, {
     Name = "${local.project_name}-backend-eip"
   })

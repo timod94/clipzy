@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/auth';
+const API_URL = `${VITE_API_URL}/api/auth`;
 
 export const handleGoogleAuthRedirect = () => {
   const urlParams = new URLSearchParams(window.location.search);

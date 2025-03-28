@@ -50,7 +50,7 @@ const VideoUpload = () => {
         formData.append('description', description);
         formData.append('visibility', visibility);
     
-        const API_BASE_URL = 'http://localhost:5000/api/videos/';
+        const API_BASE_URL = `${VITE_API_URL}/api/videos/`;
     
         try {
             console.log(videoFile)
