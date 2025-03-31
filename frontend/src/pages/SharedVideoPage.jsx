@@ -13,7 +13,7 @@ const SharedVideoPage = () => {
     const fetchVideoData = async () => {
       try {
         console.log("FetchById triggered!")
-        const response = await fetch(`http://localhost:5000/api/videos/${videoId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}api/videos/${videoId}`);
         console.log("FetchById responses!")
         console.log(response)
         if (!response.ok) {
@@ -21,16 +21,16 @@ const SharedVideoPage = () => {
         }
 
         const data = await response.json();
-        setVideoData(data); // Setze die Video-Daten
+        setVideoData(data);
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false); // Beende den Ladezustand
+        setLoading(false);
       }
     };
 
     if (videoId) {
-      fetchVideoData(); // Hole die Daten für das Video
+      fetchVideoData();
     }
   }, [videoId]);
 
@@ -39,15 +39,15 @@ const SharedVideoPage = () => {
   }
 
   if (!videoData) {
-    return <div>No video found</div>; // Falls keine Daten vorhanden sind
+    return <div>No video found</div>; 
   }
 
   return (
     <div>
-      <h1>{videoData.title}</h1> {/* Zeige den Titel des Videos an */}
-      <p>{videoData.description}</p> {/* Zeige die Beschreibung an */}
+      <h1>{videoData.title}</h1> 
+      <p>{videoData.description}</p>
 
-      {/* Hier wird der VideoPlayer eingebunden */}
+
       {videoData.videoUrl ? (
         <VideoContainer videoUrl={videoData.videoUrl} />  
       ) : (

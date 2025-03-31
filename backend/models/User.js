@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+
   googleId: { 
     type: String
   },

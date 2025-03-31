@@ -27,8 +27,6 @@ services:
     container_name: clipzy_frontend
     ports:
       - "5173:5173"
-    volumes:
-      - ./frontend:/app  
     environment:
       - VITE_API_URL=${VITE_API_URL}
       - VITE_APP_URL=${VITE_APP_URL}

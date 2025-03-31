@@ -10,6 +10,8 @@ import Profile from './pages/Profile';
 import Impressum from './pages/Impressum';
 import SharedVideoPage from './pages/SharedVideoPage';
 import HeroSection from './components/HeroSection';
+import RequestReset from './components/PasswordRequest';
+import ResetPassword from './pages/PasswordResetPage';
 import './App.css';
 
 function App() {
@@ -61,6 +63,8 @@ function App() {
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/impressum" element={<Impressum />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/request-reset" element={<RequestReset />} />
+          <Route path='/reset' element={<ResetPassword />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>

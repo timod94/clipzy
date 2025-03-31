@@ -51,6 +51,9 @@ const LoginPage = () => {
               required
             />
           </div>
+            <p>
+        <Link to="/request-reset">Forgot your password?</Link>
+          </p>
           <button
             type="submit"
             className="action-button"
