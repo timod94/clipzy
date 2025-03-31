@@ -48,6 +48,8 @@ build/
 # MongoDB
 data/
 
+.data/db/
+
 # Exclude the thumbnails directory
 server/thumbnails/
 thumbnails

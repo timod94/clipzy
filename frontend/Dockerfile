@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 5173
+RUN npm run build
 
-CMD ["npm", "start"]
+EXPOSE 5173
+EXPOSE 4173
+
+CMD ["npm", "run", "serve", "--", "--host", "0.0.0.0", "--port", "4173"]
