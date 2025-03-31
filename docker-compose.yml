@@ -3,12 +3,9 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongoDB_clipzy
-    ports:
-      - 27017:27017
     volumes:
       - ./data/db:/data/db
-    restart: always
-  server:
+  backend:
     build: ./backend
     container_name: clipzy_backend
     ports:
@@ -24,5 +21,21 @@ services:
       MONGO_URI: mongodb://mongo:27017/clipzy
       AUTH_SECRET: ${AUTH_SECRET}
       JWT_SECRET: ${JWT_SECRET}
+    
+  frontend:
+    build:
+      context: ./frontend  
+    container_name: clipzy_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app  
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_APP_URL=${VITE_APP_URL}
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
+    command: npm start -- --host 0.0.0.0  
 
 
