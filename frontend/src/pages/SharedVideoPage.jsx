@@ -13,7 +13,7 @@ const SharedVideoPage = () => {
     const fetchVideoData = async () => {
       try {
         console.log("FetchById triggered!")
-        const response = await fetch(`${import.meta.env.VITE_API_URL}api/videos/${videoId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/videos/${videoId}`);
         console.log("FetchById responses!")
         console.log(response)
         if (!response.ok) {

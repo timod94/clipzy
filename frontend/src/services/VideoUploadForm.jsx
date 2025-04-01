@@ -104,12 +104,11 @@ const VideoUpload = () => {
                 <div {...getRootProps()} className="dropzone">
                     <input {...getInputProps()} accept="video/*" />
                     <FiUpload className="upload-icon" size={48} />
-                    <p className="dropzone-text">Drag & Drop a video file, or click to select one.</p>
-                    <p className="file-requirements">
-                            <span><FiVideo /> MP4, WebM or OGG</span>
-                            <span><FiInfo /> Max 100MB</span>
-                        </p>
-                        <button className="browse-button">Browse Files</button>
+                    <p className="dropzone-text">                        
+                    <span><FiVideo /> MP4, WebM or OGG</span>
+                    <span><FiInfo /> Max 100MB</span></p>
+
+                    <button className="browse-button">Browse Files</button>
                         
                     {errorMessage && <p className="error-text">{errorMessage}</p>}
                 </div>
@@ -182,13 +181,6 @@ const VideoUpload = () => {
                          setThumbnailKey={setThumbnailKey} 
                          setUploadError={setUploadError}
                     />
-                </div>
-            )}
-
-            {thumbnailUrl && (
-                <div className="thumbnail-container">
-                    <p className="thumbnail-text">Thumbnail preview:</p>
-                    <img className="thumbnail-image" src={thumbnailUrl} alt="Thumbnail preview" />
                 </div>
             )}
         </div>

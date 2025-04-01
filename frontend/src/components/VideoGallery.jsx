@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getVideos } from '../services/VideoServices'; 
+import { getVideos } from '../services/VideoServices';
 import VideoDeleteForm from './VideoDeleteForm';
 import VideoContainer from './VideoContainer';
 import { MdOutlineIosShare } from "react-icons/md";
@@ -12,6 +12,7 @@ const VideoGallery = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [copied, setCopied] = useState(false); // Status für Kopieren
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -27,10 +28,10 @@ const VideoGallery = () => {
         const videoData = await getVideos();
         const videoWithThumbnails = videoData.map((video) => {
           if (video.key) {
-            const videoId = video.key.split('/')[1].split('_')[0];        
-            const thumbnailKey = `thumbnails/${videoId}_thumbnail.png`; 
+            const videoId = video.key.split('/')[1].split('_')[0];
+            const thumbnailKey = `thumbnails/${videoId}_thumbnail.png`;
             const thumbnailUrl = `${S3_BUCKET_URL}${thumbnailKey}`;
-            const videoUrl = `${S3_BUCKET_URL}${video.key}`; 
+            const videoUrl = `${S3_BUCKET_URL}${video.key}`;
 
             return {
               ...video,
@@ -54,6 +55,40 @@ const VideoGallery = () => {
     fetchVideos();
   }, []);
 
+  // Funktion zum Teilen des Videos
+  const handleShare = (videoId) => {
+    const shareableLink = `${import.meta.env.VITE_APP_URL}/sharedVideo/${videoId}`;
+    console.log('Generated Share Link:', shareableLink);
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareableLink)
+        .then(() => {
+          setCopied(true);  // Status auf 'true' setzen, wenn der Link erfolgreich kopiert wurde
+        })
+        .catch(err => {
+          console.error('Clipboard error:', err);
+          fallbackCopy(shareableLink);
+        });
+    } else {
+      console.warn("Clipboard API not available, using fallback");
+      fallbackCopy(shareableLink);
+    }
+
+    // Setzt den Status 'copied' nach 2 Sekunden zurück
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const fallbackCopy = (text) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    setCopied(true); // Fallback auf erfolgreich kopiert setzen
+    setTimeout(() => setCopied(false), 2000); // Status nach 2 Sekunden zurücksetzen
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -70,7 +105,6 @@ const VideoGallery = () => {
         <div className="video-grid">
           {videos.map((video, index) => (
             <div key={index} className="video-card">
-
               <h3 className='video-title'>{video.title}</h3>
               <h2 className='video-description'>{video.description}</h2>
 
@@ -78,7 +112,7 @@ const VideoGallery = () => {
 
               <div>
                 <button onClick={() => handleShare(video._id)} className='action-button'>
-                  <MdOutlineIosShare /> Share
+                  {copied ? "✔ Kopiert!" : "🔗 Link kopieren"}
                 </button>
               </div>
 
@@ -96,14 +130,6 @@ const VideoGallery = () => {
       )}
     </div>
   );
-};
-
-const handleShare = (videoId) => {
-  const shareableLink = `${import.meta.env.VITE_APP_URL}/sharedVideo/${videoId}`;
-  console.log('Generated Share Link:', shareableLink);
-  navigator.clipboard.writeText(shareableLink).then(() => {
-    alert('Link copied!');
-  });
 };
 
 export default VideoGallery;
