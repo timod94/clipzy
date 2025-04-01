@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { FiUpload, FiVideo } from 'react-icons/fi'
+import { FiUpload, FiVideo, FiInfo } from 'react-icons/fi'
 import VideoDeleteForm from '../components/VideoDeleteForm';
 import '../App.css';
 
