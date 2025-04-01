@@ -23,10 +23,13 @@ services:
       JWT_SECRET: ${JWT_SECRET}
   frontend:
     build:
-      context: ./frontend  
+      context: ./frontend
     container_name: clipzy_frontend
     ports:
       - "5173:5173"
+      - "443:5173"
+    volumes:
+      - ~/ssl:/ssl
     environment:
       - VITE_API_URL=${VITE_API_URL}
       - VITE_APP_URL=${VITE_APP_URL}

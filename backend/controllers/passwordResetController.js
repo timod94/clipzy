@@ -1,44 +1,70 @@
-const crypto = require('crypto');
 const User = require('../models/User');
-const sns = require('../config/aws'); 
-const { PublishCommand } = require('@aws-sdk/client-sns');
+const crypto = require('crypto');
+const { sendPasswordResetEmail } = require('../services/emailService');
+const { generateToken, verifyToken } = require('../utils/tokenUtils');
 
-exports.requestPasswordReset = async (req, res) => {
-  const { email } = req.body;
-  const user = await User.findOne({ email });
+const requestPasswordReset = async (req, res) => {
+    try {
+        const { email } = req.body;
 
-  if (!user) {
-    return res.status(200).json({ message: 'If the e-mail exists, a message has been sent.' });
-  }
-
-
-  const token = crypto.randomBytes(32).toString('hex');
-
- 
-  user.resetPasswordToken = token;
-  user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; 
-  await user.save();
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User with this email does not exist' });
+        }
 
 
-  const resetURL = `${process.env.VITE_APP_URL}/reset-password/${token}`;
+        const resetToken = generateToken(user._id, '1h'); 
+        const resetTokenExpires = Date.now() + 3600000;
 
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = resetTokenExpires;
+        await user.save();
 
-  const message = `You have submitted a request to reset your password. 
-  Click on the following link to reset your password:
-  ${resetURL}`;
+        const resetUrl = `${process.env.VITE_APP_URL}/reset?token=${resetToken}`;
+        await sendPasswordResetEmail(user.email, resetUrl);
 
- 
-  const params = {
-    Message: message,
-    Subject: 'Reset Password',
-    TopicArn: 'arn:aws:sns:eu-central-1:202533538428:clipzy-password-reset-topic', 
-  };
+        res.status(200).json({ 
+            message: 'Password reset link has been sent to your email',
+            token: resetToken
+        });
+    } catch (error) {
+        console.error('Error in requestPasswordReset:', error);
+        res.status(500).json({ error: 'Error processing password reset request' });
+    }
+};
 
-  try {
-    await sns.send(new PublishCommand(params));
-    res.status(200).json({ message: 'Password reset link has been sent' });
-  } catch (error) {
-    console.error('SNS Error: ', error);
-    res.status(500).json({ error: 'Error when sending the message' });
-  }
+const resetPassword = async (req, res) => {
+    try {
+        const { token, password } = req.body;
+
+        const decoded = verifyToken(token);
+        if (!decoded) {
+            return res.status(400).json({ error: 'Invalid or expired token' });
+        }
+
+        const user = await User.findOne({
+            _id: decoded.userId,
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid or expired token' });
+        }
+
+        user.password = password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.status(200).json({ message: 'Password has been successfully reset' });
+    } catch (error) {
+        console.error('Error in resetPassword:', error);
+        res.status(500).json({ error: 'Error resetting password' });
+    }
+};
+
+module.exports = {
+    requestPasswordReset,
+    resetPassword
 };

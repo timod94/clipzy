@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const dotenv = require('dotenv');
+const { requestPasswordReset, resetPassword } = require('../controllers/passwordResetController');
 
 dotenv.config();
 
@@ -83,5 +84,9 @@ router.post('/logout', (req, res) => {
       });
     });
   });
+
+router.post('/request-password-reset', requestPasswordReset);
+
+router.post('/reset-password', resetPassword);
 
 module.exports = router;

@@ -7,30 +7,24 @@ function RequestReset() {
 
     const handleRequestReset = async (e) => {
         e.preventDefault();
+        setMessage('Sending reset link...');
+        
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/request-password-reset`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email }),
-            });
-
-            const data = await response.json();
-
-           
-            if (!response.ok) {
-                setMessage(data.error || 'Password reset error');
-                return; 
-            }
-
-            setMessage(data.message);
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/request-password-reset`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+      
+          const data = await response.json();
+          
+          if (!response.ok) throw new Error(data.error || 'Failed to send email');
+          
+          setMessage('Password reset link sent! Check your email.');
         } catch (error) {
-            console.error('Error when checking the data:', error);
-            setMessage('An error occurred while sending the request.');
+          setMessage(error.message);
         }
-    
-    }
+      };
 
     return (
 
@@ -43,7 +37,7 @@ function RequestReset() {
           value={email}
           id="email"
           name="email"
-          placeholder="mail address to send password reset mail"
+          placeholder="mail address for passwort reset"
           onChange={(e) => setEmail(e.target.value)}
           required
         />
