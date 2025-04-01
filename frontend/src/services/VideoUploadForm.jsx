@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { FiUpload, FiVideo } from 'react-icons/fi'
 import VideoDeleteForm from '../components/VideoDeleteForm';
 import '../App.css';
 
@@ -50,8 +51,8 @@ const VideoUpload = () => {
         formData.append('description', description);
         formData.append('visibility', visibility);
     
-        const API_BASE_URL = 'http://localhost:5000/api/videos/';
-    
+        const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api/videos/`;    
+
         try {
             console.log(videoFile)
             console.log(videoFile.location)
@@ -86,6 +87,14 @@ const VideoUpload = () => {
             setUploading(false);
         }
     };
+
+    const resetForm = () => {
+        setVideoFile(null);
+        setTitle('');
+        setDescription('');
+        setVisibility('public');
+        setStep(1);
+    };
    
 
     return (
@@ -94,21 +103,36 @@ const VideoUpload = () => {
             {step === 1 && (
                 <div {...getRootProps()} className="dropzone">
                     <input {...getInputProps()} accept="video/*" />
+                    <FiUpload className="upload-icon" size={48} />
                     <p className="dropzone-text">Drag & Drop a video file, or click to select one.</p>
+                    <p className="file-requirements">
+                            <span><FiVideo /> MP4, WebM or OGG</span>
+                            <span><FiInfo /> Max 100MB</span>
+                        </p>
+                        <button className="browse-button">Browse Files</button>
+                        
                     {errorMessage && <p className="error-text">{errorMessage}</p>}
                 </div>
             )}
 
             {step === 2 && (
                 <div className="form-container">
+                        <div className="file-preview">
+                        <p className="file-name">
+                            <FiVideo /> {videoFile.name}
+                        </p>
+                        <p className="file-size">
+                            {(videoFile.size / (1024 * 1024)).toFixed(2)} MB
+                        </p>
+                    </div>
                     <input
                         type="text"
-                        placeholder="Title"
+                        placeholder="Enter video title"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
                     <textarea
-                        placeholder="Description"
+                        placeholder="Tell viewers about your video"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
@@ -131,6 +155,7 @@ const VideoUpload = () => {
                     </button>
                 </div>
             )}
+            
 
             {/* Ausgabe für Video-URL und Thumbnail */}
              {step === 3 && videoUrl && (
@@ -143,6 +168,9 @@ const VideoUpload = () => {
                             <source src={videoUrl} type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
+                        <button onClick={resetForm} className="secondary-button">
+                            Upload Another Video
+                        </button>
                     </div>
                     <VideoDeleteForm 
                          videoUrl={videoUrl}

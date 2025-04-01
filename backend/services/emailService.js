@@ -1,6 +1,5 @@
-// backend/services/emailService.js
 const { PublishCommand } = require('@aws-sdk/client-sns');
-const { sns } = require('../aws/clients');
+const { sns } = require('../config/aws');
 
 const sendPasswordResetEmail = async (email, resetUrl) => {
   const htmlContent = `

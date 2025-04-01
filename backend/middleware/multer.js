@@ -1,9 +1,9 @@
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const s3 = require('../config/aws');
+const { s3 } = require('../config/aws');
 
 const upload = multer({
-  limits: { fileSize: 50 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
   storage: multerS3({
     s3: s3,
     bucket: 'clipzy-bucket',

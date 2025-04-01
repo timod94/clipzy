@@ -1,5 +1,5 @@
 const { ListObjectsV2Command } = require('@aws-sdk/client-s3');
-const s3 = require('../config/aws');
+const { s3 } = require('../config/aws');
 const Video = require('../models/Video');
 
 exports.getVideoUrls = async (req, res) => {

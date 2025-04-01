@@ -49,7 +49,7 @@ const SharedVideoPage = () => {
 
 
       {videoData.videoUrl ? (
-        <VideoContainer videoUrl={videoData.videoUrl} />  
+        <VideoContainer videoUrl={videoData.videoUrl} thumbnailUrl={videoData.thumbnailUrl} />  
       ) : (
         <div>No video URL available</div>
       )}

@@ -102,7 +102,9 @@ function ResetPassword() {
 
       <div className="links">
         <Link to="/login">Back to Login</Link>
+        <p>
         <Link to="/impressum">Impressum</Link>
+        </p>
       </div>
     </div>
   );

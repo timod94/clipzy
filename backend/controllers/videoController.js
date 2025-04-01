@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
 const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
-const s3 = require('../config/aws');
+const { s3 } = require('../config/aws');
 const Video = require('../models/Video');
 
 exports.uploadVideo = (req, res) => {
