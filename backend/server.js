@@ -9,8 +9,6 @@ const googleAuthRoutes = require('./routes/googleAuthRoutes');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); 
 const authMiddleware = require('./middleware/authMiddleware');
-const analyticsRoutes = require('./routes/analyticsRoutes');
-
 
 const createApp = () => {
   const app = express();
@@ -43,8 +41,6 @@ const createApp = () => {
   app.use('/api/videos', videoRoutes);
   app.use('/api/auth', authRoutes);
   app.use('/api/auth', googleAuthRoutes);
-  app.use('/api/analytics', analyticsRoutes);
-
 
   app.get('/api/status', (req, res) => {
     res.json({ status: 'OK' });

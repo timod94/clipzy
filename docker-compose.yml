@@ -36,4 +36,4 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
-    command: npm run dev -- --host 0.0.0.0
+    command: npm run preview -- --host 0.0.0.0
