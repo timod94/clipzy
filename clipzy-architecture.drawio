@@ -74,7 +74,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="maR94bAQzjeONWRQdzdn-1" value="Simple Notification Service" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#000000;fillColor=#E7157B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=30;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sns;fontFamily=Georgia;" vertex="1" parent="1">
-          <mxGeometry x="182" y="1013" width="125" height="125" as="geometry" />
+          <mxGeometry x="185" y="973" width="125" height="125" as="geometry" />
         </mxCell>
         <mxCell id="maR94bAQzjeONWRQdzdn-9" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;jumpStyle=gap;strokeWidth=3;" edge="1" parent="1" target="maR94bAQzjeONWRQdzdn-1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
