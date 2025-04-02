@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 OPR/117.0.0.0" version="26.2.3">
   <diagram name="Page-1" id="7a6c530e-6e37-e111-ec74-82921da8cc10">
-    <mxGraphModel dx="2522" dy="1435" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="light-dark(#FFFFFF,#1DAFE9)" math="0" shadow="0">
+    <mxGraphModel dx="2522" dy="1435" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" style=";html=1;" />
         <mxCell id="1" style=";html=1;" parent="0" />
@@ -37,18 +37,18 @@
           <mxGeometry x="66" y="429" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="2FV92E6_kj3xv08Foaql-16" value="User" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;image=img/lib/allied_telesis/computer_and_terminals/Personal_Computer.svg;fontSize=33;labelBackgroundColor=none;fontStyle=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontColor=light-dark(#000000,#000000);fontFamily=Georgia;strokeWidth=9;" parent="1" vertex="1">
-          <mxGeometry x="1371" y="599" width="236.12" height="320" as="geometry" />
+          <mxGeometry x="1365" y="460" width="236.12" height="320" as="geometry" />
         </mxCell>
-        <mxCell id="JWT1KM4LXN9CEUxrUV-3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=5;strokeColor=light-dark(#000000,#000000);" edge="1" parent="1" source="maR94bAQzjeONWRQdzdn-1" target="2FV92E6_kj3xv08Foaql-16">
+        <mxCell id="JWT1KM4LXN9CEUxrUV-3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=5;strokeColor=light-dark(#000000,#000000);" edge="1" parent="1" source="maR94bAQzjeONWRQdzdn-1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1470.7272727272725" y="1037" as="targetPoint" />
+            <mxPoint x="1483" y="852" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="maR94bAQzjeONWRQdzdn-1" value="Simple Notification Service" style="points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=light-dark(#000000,#000000);fillColor=#E7157B;strokeColor=#ffffff;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=33;fontStyle=1;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sns;fontFamily=Georgia;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;strokeWidth=9;" parent="1" vertex="1">
           <mxGeometry x="569" y="967" width="140" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="maR94bAQzjeONWRQdzdn-10" value="AWS Architecture&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=1;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=33;fontStyle=1;movable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;strokeWidth=9;fontColor=light-dark(#000000,#000000);" parent="1" vertex="1">
-          <mxGeometry x="94" y="43" width="275" height="91" as="geometry" />
+        <mxCell id="maR94bAQzjeONWRQdzdn-10" value="AWS Architecture&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=1;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=41;fontStyle=1;movable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;strokeWidth=9;fontColor=light-dark(#000000,#000000);labelPosition=center;verticalLabelPosition=middle;" parent="1" vertex="1">
+          <mxGeometry x="26" y="24" width="338" height="157" as="geometry" />
         </mxCell>
         <mxCell id="JWT1KM4LXN9CEUxrUV-3-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=5;strokeColor=light-dark(#000000,#000000);exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="JWT1KM4LXN9CEUxrUV-3-1" target="2FV92E6_kj3xv08Foaql-3">
           <mxGeometry relative="1" as="geometry">
