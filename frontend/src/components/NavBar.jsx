@@ -57,7 +57,7 @@ const NavBar = () => {
         </Link>
       </div>
       
-      {/* Desktop Navigation (middle) - Nur Auth-Links */}
+      {/* Desktop (middle) - only Auth-links */}
       {!isMobile && (
         <div className='navbar-middle'>
           {isAuthenticated ? (
@@ -77,7 +77,7 @@ const NavBar = () => {
         </div>
       )}
      
-      {/* Dropdown (Desktop: Nur zusätzliche Links | Mobile: Alles) */}
+      {/* Dropdown (Desktop) */}
       <div className="navbar-right">
         <div className="dropdown">
           <button 
@@ -93,15 +93,16 @@ const NavBar = () => {
           
           {isDropdownOpen && (
             <div className={`dropdown-menu ${isDropdownOpen ? 'active' : ''}`}>
-              {/* Auf Desktop nur diese Links anzeigen */}
-              {!isMobile && (
+                {!isMobile && (
                 <>
+                  {isAuthenticated && (
                   <Link to="/profile" onClick={closeDropdown}>Profile</Link>
+                  )}
                   <Link to="/impressum" onClick={closeDropdown}>Impressum</Link>
                 </>
               )}
               
-              {/* Auf Mobile alle Links anzeigen */}
+             
               {isMobile && (
                 <>
                   {isAuthenticated ? (
@@ -118,7 +119,9 @@ const NavBar = () => {
                       <SlLogin /> Sign in
                     </Link>
                   )}
+                  {isAuthenticated && (
                   <Link to="/profile" onClick={closeDropdown}>Profile</Link>
+                  )}
                   <Link to="/impressum" onClick={closeDropdown}>Impressum</Link>
                 </>
               )}
