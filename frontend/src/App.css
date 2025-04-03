@@ -105,6 +105,7 @@ body {
 .navbar {
   background-color: var(--primary-color);
   padding: var(--spacing-md) var(--spacing-xl);
+  padding-top: var(--spacing-xs);
   position: sticky;
   top: 0; 
   z-index: 10;

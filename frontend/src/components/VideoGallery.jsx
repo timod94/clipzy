@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { getVideos } from '../services/VideoServices';
 import VideoDeleteForm from './VideoDeleteForm';
 import VideoContainer from './VideoContainer';
-import { MdOutlineIosShare } from "react-icons/md";
 import '../App.css';
 
 const S3_BUCKET_URL = 'https://clipzy-bucket.s3.eu-central-1.amazonaws.com/';
@@ -12,7 +11,7 @@ const VideoGallery = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
-  const [copied, setCopied] = useState(false); // Status für Kopieren
+  const [copied, setCopied] = useState(false); 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -55,7 +54,7 @@ const VideoGallery = () => {
     fetchVideos();
   }, []);
 
-  // Funktion zum Teilen des Videos
+
   const handleShare = (videoId) => {
     const shareableLink = `${import.meta.env.VITE_APP_URL}/sharedVideo/${videoId}`;
     console.log('Generated Share Link:', shareableLink);
@@ -63,7 +62,7 @@ const VideoGallery = () => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(shareableLink)
         .then(() => {
-          setCopied(true);  // Status auf 'true' setzen, wenn der Link erfolgreich kopiert wurde
+          setCopied(true); 
         })
         .catch(err => {
           console.error('Clipboard error:', err);
@@ -74,7 +73,6 @@ const VideoGallery = () => {
       fallbackCopy(shareableLink);
     }
 
-    // Setzt den Status 'copied' nach 2 Sekunden zurück
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -85,8 +83,8 @@ const VideoGallery = () => {
     textArea.select();
     document.execCommand("copy");
     document.body.removeChild(textArea);
-    setCopied(true); // Fallback auf erfolgreich kopiert setzen
-    setTimeout(() => setCopied(false), 2000); // Status nach 2 Sekunden zurücksetzen
+    setCopied(true); 
+    setTimeout(() => setCopied(false), 2000);
   };
 
   if (loading) {
