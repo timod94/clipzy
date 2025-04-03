@@ -108,8 +108,9 @@ body {
   position: sticky;
   top: 0; 
   z-index: 10;
-  height: 40px;
+  height: auto;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   backdrop-filter: blur(10px);
@@ -141,7 +142,9 @@ body {
 .navbar-logo:hover {
   transform: scale(1.05);
 }
-
+.navbar-right {
+  display: block !important;
+}
 
 /* --- Hamburger Menu --- */
 .hamburger {
@@ -672,6 +675,17 @@ body {
 
   .navbar {
     padding: var(--spacing-sm);
+  }
+  .navbar-middle {
+    order: 3; /* Bewegt Links unter Logo */
+    width: 100%;
+    margin-top: var(--spacing-sm);
+    justify-content: space-around;
+  }
+  
+  .navbar a {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
   }
 
   .video-gallery {
