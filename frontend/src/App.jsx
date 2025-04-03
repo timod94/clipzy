@@ -44,14 +44,15 @@ function App() {
         <NavBar />
         <button 
           onClick={toggleTheme} 
-          style={{
-            position: 'fixed', 
-            top: 10, 
-            right: 10, 
-            background: 'transparent', 
-            border: 'none', 
-            cursor: 'pointer'
-          }}
+        style={{
+          position: 'fixed',
+          top: '1rem',
+          right: '1rem',
+          zIndex: 1000,
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer'
+}}
           aria-label="Toggle Dark Mode"
         >
           {isDarkMode ? <FaToggleOn size={24} color="#5187dd" /> : <FaToggleOff size={24} color="#333" />}

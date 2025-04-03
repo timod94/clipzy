@@ -9,6 +9,7 @@ import '../App.css';
 const NavBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,16 +18,27 @@ const NavBar = () => {
       setIsAuthenticated(!!session?.token);
     };
     
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
     checkAuth();
+    checkScreenSize();
     
     window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+      window.removeEventListener('resize', checkScreenSize);
+    };
   }, []);
 
   const handleLogout = async () => {
     await signOut();
     setIsAuthenticated(false); 
     navigate('/login');
+    closeDropdown();
   };
   
   const toggleDropdown = () => {
@@ -34,44 +46,83 @@ const NavBar = () => {
   };
 
   const closeDropdown = () => {
-    setIsDropdownOpen(false)
-  }
+    setIsDropdownOpen(false);
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-left">
-      
-        <Link to="/"><img src={logo} className="navbar-logo" alt="Clipzy logo" /></Link>
+        <Link to="/" onClick={closeDropdown}>
+          <img src={logo} className="navbar-logo" alt="Clipzy logo" />
+        </Link>
       </div>
-      <div className='navbar-middle'>
-      {isAuthenticated ? (
-          <>
-            <Link to="/upload" aria-label='Upload file'><FaUpload /> Upload
+      
+      {/* Desktop Navigation (middle) - Nur Auth-Links */}
+      {!isMobile && (
+        <div className='navbar-middle'>
+          {isAuthenticated ? (
+            <>
+              <Link to="/upload" aria-label='Upload file'>
+                <FaUpload /> Upload
+              </Link>
+              <button onClick={handleLogout} className="action-button">
+                <SlLogout /> Logout
+              </button>
+            </>
+          ) : (
+            <Link to="/login">
+              <SlLogin /> Sign in
             </Link>
-            <button onClick={handleLogout} className="action-button">
-            <SlLogout /> Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login"><SlLogin /> Sign in</Link>
-            
-          </>
-        )}
+          )}
         </div>
+      )}
      
+      {/* Dropdown (Desktop: Nur zusätzliche Links | Mobile: Alles) */}
       <div className="navbar-right">
         <div className="dropdown">
-          <button className="hamburger" onClick={toggleDropdown}>
+          <button 
+            className="hamburger" 
+            onClick={toggleDropdown}
+            aria-label="Menu"
+            aria-expanded={isDropdownOpen}
+          >
             <div className="bar"></div>
             <div className="bar"></div>
             <div className="bar"></div>
           </button>
+          
           {isDropdownOpen && (
             <div className={`dropdown-menu ${isDropdownOpen ? 'active' : ''}`}>
-            <Link to="/profile" onClick={closeDropdown}>Profile</Link>
-            <Link to="/impressum" onClick={closeDropdown}>Impressum</Link>
-          </div>
+              {/* Auf Desktop nur diese Links anzeigen */}
+              {!isMobile && (
+                <>
+                  <Link to="/profile" onClick={closeDropdown}>Profile</Link>
+                  <Link to="/impressum" onClick={closeDropdown}>Impressum</Link>
+                </>
+              )}
+              
+              {/* Auf Mobile alle Links anzeigen */}
+              {isMobile && (
+                <>
+                  {isAuthenticated ? (
+                    <>
+                      <Link to="/upload" onClick={closeDropdown}>
+                        <FaUpload /> Upload
+                      </Link>
+                      <button onClick={handleLogout} className="dropdown-link">
+                        <SlLogout /> Logout
+                      </button>
+                    </>
+                  ) : (
+                    <Link to="/login" onClick={closeDropdown}>
+                      <SlLogin /> Sign in
+                    </Link>
+                  )}
+                  <Link to="/profile" onClick={closeDropdown}>Profile</Link>
+                  <Link to="/impressum" onClick={closeDropdown}>Impressum</Link>
+                </>
+              )}
+            </div>
           )}
         </div>
       </div>
