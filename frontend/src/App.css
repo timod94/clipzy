@@ -217,7 +217,7 @@ body {
 /* --- Buttons --- */
 .action-button {
   background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-  color: white;
+  color: #c4c4c4;
   border: none;
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--border-radius);
@@ -452,7 +452,7 @@ body {
 }
 
 .file-preview {
-  background: var(--background-color);
+  background-color: var(--background-color);
   padding: 1rem;
   border-radius: 6px;
   display: flex;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { Link } from 'react-router-dom';
 import { FiUpload, FiVideo, FiInfo } from 'react-icons/fi'
 import VideoDeleteForm from '../components/VideoDeleteForm';
 import '../App.css';
@@ -146,6 +147,7 @@ const VideoUpload = () => {
                     Choose "Public" to share your video with everyone or "Private" to keep it visible only to you.
                     </p>
                     </div>
+                    <button onClick={() => setStep(1)}>Back</button>
                     <button
                         onClick={handleVideoUpload}
                         disabled={!title || !description || !visibility}
@@ -159,7 +161,8 @@ const VideoUpload = () => {
             {/* Ausgabe für Video-URL und Thumbnail */}
              {step === 3 && videoUrl && (
                 <div className="video-container">
-                    <p className="upload-success">Video successfully uploaded!</p>
+                    <h2 className="upload-success">Video successfully uploaded!</h2>
+                    <p>Visit your <Link to="/profile">profile</Link> now to share this with others.</p>
                     <p>{title}</p>
                     <p>{description}</p>
                     <div className="video-preview">
@@ -167,7 +170,8 @@ const VideoUpload = () => {
                             <source src={videoUrl} type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
-                        <button onClick={resetForm} className="secondary-button">
+                        
+                        <button onClick={resetForm} className="action-button">
                             Upload Another Video
                         </button>
                     </div>
